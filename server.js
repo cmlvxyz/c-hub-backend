@@ -19,7 +19,7 @@ app.use(cors({
 }));
 app.use(express.json());
 
-// ✅ I-SERVE ANG STATIC FILES (IMAGES)
+// ✅ SERVE STATIC FILES (IMAGES)
 app.use('/images', express.static(path.join(__dirname, 'public/images')));
 
 // Data folder
@@ -976,13 +976,14 @@ app.delete('/api/orders/:id', (req, res) => {
   }
 });
 
+// ============ PRODUCTS ============
 // Get products
 app.get('/api/products', (req, res) => {
   const products = readData(PRODUCTS_FILE);
   res.json(products);
 });
 
-// ✅ Update product - UPDATED: Can find by id OR sku
+// Update product
 app.patch('/api/products/:id', (req, res) => {
   try {
     const { id } = req.params;
@@ -1025,78 +1026,6 @@ app.delete('/api/products/:id', (req, res) => {
     
   } catch (error) {
     console.error('❌ Error deleting product:', error);
-    res.status(500).json({ error: error.message });
-  }
-});
-
-// ============ ALERTS ============
-app.get('/api/alerts', (req, res) => {
-  const products = readData(PRODUCTS_FILE);
-  const alerts = products
-    .filter(p => p.stock <= 10)
-    .map(p => ({
-      id: `alert-${p.id}`,
-      productId: p.id,
-      sku: p.sku || `SKU-${p.id}`,
-      productName: p.name,
-      category: p.category || 'General',
-      currentStock: p.stock,
-      threshold: 10,
-      reorderPoint: 15,
-      reorderQty: 50,
-      supplierName: 'Default Supplier',
-      estimatedDaysToOut: p.stock > 0 ? Math.round((p.stock / 5) * 10) / 10 : 0,
-      severity: p.stock === 0 ? 'critical' : 'warning',
-      status: 'active',
-      createdAt: new Date().toISOString()
-    }));
-  res.json(alerts);
-});
-
-// ============ PURCHASE ORDERS ============
-app.get('/api/purchase-orders', (req, res) => {
-  const pos = readData(PURCHASE_ORDERS_FILE);
-  res.json(pos);
-});
-
-app.post('/api/purchase-orders', (req, res) => {
-  try {
-    const pos = readData(PURCHASE_ORDERS_FILE);
-    const newPO = {
-      ...req.body,
-      id: `po-${Date.now()}`,
-      poNumber: `PO-${Math.floor(1000 + Math.random() * 9000)}`,
-      createdAt: new Date().toISOString(),
-      status: 'Draft'
-    };
-    pos.unshift(newPO);
-    writeData(PURCHASE_ORDERS_FILE, pos);
-    res.status(201).json({ success: true, purchaseOrder: newPO });
-  } catch (error) {
-    res.status(500).json({ error: error.message });
-  }
-});
-
-app.patch('/api/purchase-orders/:id', (req, res) => {
-  try {
-    const { id } = req.params;
-    const pos = readData(PURCHASE_ORDERS_FILE);
-    const index = pos.findIndex(p => p.id === id || p.poNumber === id);
-    
-    if (index === -1) {
-      return res.status(404).json({ error: 'Purchase order not found' });
-    }
-
-    pos[index] = {
-      ...pos[index],
-      ...req.body,
-      updatedAt: new Date().toISOString()
-    };
-
-    writeData(PURCHASE_ORDERS_FILE, pos);
-    res.json({ success: true, purchaseOrder: pos[index] });
-    
-  } catch (error) {
     res.status(500).json({ error: error.message });
   }
 });
@@ -1215,14 +1144,6 @@ app.patch('/api/gateways/:id/toggle', (req, res) => {
   }
   gateway.enabled = !gateway.enabled;
   res.json({ success: true, gateway });
-});
-
-app.post('/api/gateways/:id/test-webhook', (req, res) => {
-  res.json({ 
-    success: true, 
-    message: 'Webhook test successful', 
-    event: 'payment_intent.succeeded' 
-  });
 });
 
 // ============ ANALYTICS ============
