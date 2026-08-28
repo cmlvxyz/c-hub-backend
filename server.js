@@ -468,7 +468,7 @@ const enrichOrderItemsWithImages = (order) => {
   }
   
   const products = readData(PRODUCTS_FILE);
-  const BASE_URL = 'https://c-hub-backend-ijy4.onrender.com';
+  const BASE_URL = 'https://c-hub-admin.vercel.app';
   
   console.log(`🔍 Enriching ${order.items.length} items for order ${order.orderId}`);
   
@@ -656,7 +656,7 @@ app.post('/api/orders', (req, res) => {
     }
     
     const products = readData(PRODUCTS_FILE);
-    const BASE_URL = 'https://c-hub-backend-ijy4.onrender.com';
+    const BASE_URL = 'https://c-hub-admin.vercel.app';
     
     const newOrder = {
       ...req.body,
