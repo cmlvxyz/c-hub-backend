@@ -1172,6 +1172,20 @@ app.get('/api/health', (req, res) => {
   });
 });
 
+// ============ DEBUG ============
+// ✅ IDAGDAG MO ITO DITO - AFTER HEALTH CHECK, BEFORE START SERVER
+app.get('/api/debug/products', (req, res) => {
+  const products = readData(PRODUCTS_FILE);
+  const names = products.map(p => ({
+    name: p.name,
+    image: p.image
+  }));
+  res.json({
+    total: products.length,
+    products: names
+  });
+});
+
 // ============ START SERVER ============
 app.listen(PORT, '0.0.0.0', () => {
   console.log(`✅ C-HUB Backend Server running on http://localhost:${PORT}`);
