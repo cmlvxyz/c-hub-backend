@@ -1,5 +1,89 @@
 [
   {
+    "orderId": "CHUB-533055",
+    "date": "Aug 28, 2026",
+    "customer": {
+      "name": "Ian Clavel",
+      "email": "iandelacruz@gmail.com",
+      "phone": "09987654321",
+      "address": "SFII LIMAY, BATAAN"
+    },
+    "items": [
+      {
+        "id": "clothes-women-top-Cream-XL",
+        "name": "Peplum Top - Cream",
+        "price": 1799,
+        "image": "https://images.unsplash.com/photo-1521572267360-ee0c2909d518?w=500&auto=format&fit=crop&q=80",
+        "size": "XL",
+        "color": "Cream",
+        "subCategory": "top",
+        "gender": "women",
+        "qty": 1
+      },
+      {
+        "id": "clothes-women-dress-Sky Stripe-XL",
+        "name": "Summer Halter Dress - Sky Stripe",
+        "price": 2999,
+        "image": "https://images.unsplash.com/photo-1521572267360-ee0c2909d518?w=500&auto=format&fit=crop&q=80",
+        "size": "XL",
+        "color": "Sky Stripe",
+        "subCategory": "dress",
+        "gender": "women",
+        "qty": 1
+      }
+    ],
+    "subtotal": 4798,
+    "shipping": 0,
+    "discount": 0,
+    "discountCode": "",
+    "total": 4798,
+    "payment": "Cash on Delivery",
+    "status": "To Ship",
+    "createdAt": "2026-08-28T12:51:00.690Z"
+  },
+  {
+    "orderId": "CHUB-301563",
+    "date": "Aug 28, 2026",
+    "customer": {
+      "name": "Edrian Dela Cruz",
+      "email": "edrian.clavel.delacruz@apcas.ph.education",
+      "phone": "09987654321",
+      "address": "SF II LIMAY, BATAAN"
+    },
+    "items": [
+      {
+        "id": "clothes-women-top-Cream-XL",
+        "name": "Peplum Top - Cream",
+        "price": 1799,
+        "image": "https://images.unsplash.com/photo-1521572267360-ee0c2909d518?w=500&auto=format&fit=crop&q=80",
+        "size": "XL",
+        "color": "Cream",
+        "subCategory": "top",
+        "gender": "women",
+        "qty": 1
+      },
+      {
+        "id": "clothes-women-dress-Sky Stripe-XL",
+        "name": "Summer Halter Dress - Sky Stripe",
+        "price": 2999,
+        "image": "https://images.unsplash.com/photo-1521572267360-ee0c2909d518?w=500&auto=format&fit=crop&q=80",
+        "size": "XL",
+        "color": "Sky Stripe",
+        "subCategory": "dress",
+        "gender": "women",
+        "qty": 1
+      }
+    ],
+    "subtotal": 4798,
+    "shipping": 0,
+    "discount": 0,
+    "discountCode": "",
+    "total": 4798,
+    "payment": "Cash on Delivery",
+    "status": "To Ship",
+    "createdAt": "2026-08-28T12:25:50.231Z"
+  },
+  {
     "orderId": "CHUB-810911",
     "date": "Aug 28, 2026",
     "customer": {
