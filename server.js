@@ -33,24 +33,10 @@ const PRODUCTS_FILE = path.join(DATA_DIR, 'products.json');
 const REVIEWS_FILE = path.join(DATA_DIR, 'reviews.json');
 const PURCHASE_ORDERS_FILE = path.join(DATA_DIR, 'purchase_orders.json');
 
-// ✅ INITIAL DATA (Ilagay mo dito yung buong laman ng products.json)
 const INITIAL_PRODUCTS = [
+  // ============ MEN'S T-SHIRTS ============
   {
-    "id": "prod-001",
-    "sku": "CHUB-HD-001",
-    "name": "C-HUB Signature Heavyweight Hoodie",
-    "price": 2499,
-    "stock": 45,
-    "image": "/images/clothes/men/hoodie/beige.png",
-    "sizes": ["S", "M", "L", "XL"],
-    "colors": ["Beige", "Mauve", "Pink", "Sage", "Burgundy", "Brown"],
-    "category": "Apparel",
-    "subCategory": "Hoodies & Sweats",
-    "costPrice": 1200,
-    "brand": "C-HUB Originals"
-  },
-  {
-    "id": "prod-002",
+    "id": "clothes-men-tshirt-White-XL",
     "sku": "CHUB-TEE-001",
     "name": "Premium T-Shirt - White",
     "price": 1999,
@@ -64,7 +50,7 @@ const INITIAL_PRODUCTS = [
     "brand": "C-HUB Originals"
   },
   {
-    "id": "prod-003",
+    "id": "clothes-men-tshirt-Black-XL",
     "sku": "CHUB-TEE-002",
     "name": "Premium T-Shirt - Black",
     "price": 1999,
@@ -78,7 +64,7 @@ const INITIAL_PRODUCTS = [
     "brand": "C-HUB Originals"
   },
   {
-    "id": "prod-004",
+    "id": "clothes-men-tshirt-Blue-XL",
     "sku": "CHUB-TEE-003",
     "name": "Premium T-Shirt - Blue",
     "price": 1999,
@@ -92,7 +78,7 @@ const INITIAL_PRODUCTS = [
     "brand": "C-HUB Originals"
   },
   {
-    "id": "prod-005",
+    "id": "clothes-men-tshirt-Yellow-XL",
     "sku": "CHUB-TEE-004",
     "name": "Premium T-Shirt - Yellow",
     "price": 1999,
@@ -106,7 +92,7 @@ const INITIAL_PRODUCTS = [
     "brand": "C-HUB Originals"
   },
   {
-    "id": "prod-006",
+    "id": "clothes-men-tshirt-Red-XL",
     "sku": "CHUB-TEE-005",
     "name": "Premium T-Shirt - Red",
     "price": 1999,
@@ -120,7 +106,7 @@ const INITIAL_PRODUCTS = [
     "brand": "C-HUB Originals"
   },
   {
-    "id": "prod-007",
+    "id": "clothes-men-tshirt-Green-XL",
     "sku": "CHUB-TEE-006",
     "name": "Premium T-Shirt - Green",
     "price": 1999,
@@ -133,9 +119,11 @@ const INITIAL_PRODUCTS = [
     "costPrice": 800,
     "brand": "C-HUB Originals"
   },
+  
+  // ============ MEN'S HOODIES ============
   {
-    "id": "prod-008",
-    "sku": "CHUB-HD-002",
+    "id": "clothes-men-hoodie-Beige-XL",
+    "sku": "CHUB-HD-001",
     "name": "Cozy Hoodie - Beige",
     "price": 2499,
     "stock": 40,
@@ -148,8 +136,8 @@ const INITIAL_PRODUCTS = [
     "brand": "C-HUB Originals"
   },
   {
-    "id": "prod-009",
-    "sku": "CHUB-HD-003",
+    "id": "clothes-men-hoodie-Mauve-XL",
+    "sku": "CHUB-HD-002",
     "name": "Cozy Hoodie - Mauve",
     "price": 2499,
     "stock": 35,
@@ -162,8 +150,8 @@ const INITIAL_PRODUCTS = [
     "brand": "C-HUB Originals"
   },
   {
-    "id": "prod-010",
-    "sku": "CHUB-HD-004",
+    "id": "clothes-men-hoodie-Pink-XL",
+    "sku": "CHUB-HD-003",
     "name": "Cozy Hoodie - Pink",
     "price": 2499,
     "stock": 30,
@@ -176,8 +164,8 @@ const INITIAL_PRODUCTS = [
     "brand": "C-HUB Originals"
   },
   {
-    "id": "prod-011",
-    "sku": "CHUB-HD-005",
+    "id": "clothes-men-hoodie-Sage-XL",
+    "sku": "CHUB-HD-004",
     "name": "Cozy Hoodie - Sage",
     "price": 2499,
     "stock": 25,
@@ -190,8 +178,8 @@ const INITIAL_PRODUCTS = [
     "brand": "C-HUB Originals"
   },
   {
-    "id": "prod-012",
-    "sku": "CHUB-HD-006",
+    "id": "clothes-men-hoodie-Burgundy-XL",
+    "sku": "CHUB-HD-005",
     "name": "Cozy Hoodie - Burgundy",
     "price": 2499,
     "stock": 20,
@@ -204,8 +192,8 @@ const INITIAL_PRODUCTS = [
     "brand": "C-HUB Originals"
   },
   {
-    "id": "prod-013",
-    "sku": "CHUB-HD-007",
+    "id": "clothes-men-hoodie-Brown-XL",
+    "sku": "CHUB-HD-006",
     "name": "Cozy Hoodie - Brown",
     "price": 2499,
     "stock": 15,
@@ -217,8 +205,10 @@ const INITIAL_PRODUCTS = [
     "costPrice": 1200,
     "brand": "C-HUB Originals"
   },
+  
+  // ============ MEN'S SWEATSHIRTS ============
   {
-    "id": "prod-014",
+    "id": "clothes-men-sweatshirt-White-XL",
     "sku": "CHUB-SW-001",
     "name": "Classic Sweatshirt - White",
     "price": 2199,
@@ -232,7 +222,7 @@ const INITIAL_PRODUCTS = [
     "brand": "C-HUB Originals"
   },
   {
-    "id": "prod-015",
+    "id": "clothes-men-sweatshirt-Gray-XL",
     "sku": "CHUB-SW-002",
     "name": "Classic Sweatshirt - Gray",
     "price": 2199,
@@ -246,7 +236,7 @@ const INITIAL_PRODUCTS = [
     "brand": "C-HUB Originals"
   },
   {
-    "id": "prod-016",
+    "id": "clothes-men-sweatshirt-Blue-XL",
     "sku": "CHUB-SW-003",
     "name": "Classic Sweatshirt - Blue",
     "price": 2199,
@@ -260,7 +250,7 @@ const INITIAL_PRODUCTS = [
     "brand": "C-HUB Originals"
   },
   {
-    "id": "prod-017",
+    "id": "clothes-men-sweatshirt-Brown-XL",
     "sku": "CHUB-SW-004",
     "name": "Classic Sweatshirt - Brown",
     "price": 2199,
@@ -274,7 +264,7 @@ const INITIAL_PRODUCTS = [
     "brand": "C-HUB Originals"
   },
   {
-    "id": "prod-018",
+    "id": "clothes-men-sweatshirt-Pink-XL",
     "sku": "CHUB-SW-005",
     "name": "Classic Sweatshirt - Pink",
     "price": 2199,
@@ -288,7 +278,7 @@ const INITIAL_PRODUCTS = [
     "brand": "C-HUB Originals"
   },
   {
-    "id": "prod-019",
+    "id": "clothes-men-sweatshirt-Beige-XL",
     "sku": "CHUB-SW-006",
     "name": "Classic Sweatshirt - Beige",
     "price": 2199,
@@ -301,50 +291,196 @@ const INITIAL_PRODUCTS = [
     "costPrice": 1000,
     "brand": "C-HUB Originals"
   },
+
+  // ============ WOMEN'S TOPS ============
   {
-    "id": "prod-020",
-    "sku": "CHUB-PANTS-001",
-    "name": "Classic Denim Jeans - Light Stone",
+    "id": "clothes-women-top-Cream-S",
+    "sku": "CHUB-WTOP-001",
+    "name": "Peplum Top - Cream",
     "price": 1799,
-    "stock": 40,
-    "image": "/images/clothes/men/pants/pants1.png",
-    "sizes": ["28", "30", "32", "34", "36"],
-    "colors": ["Light Stone", "Mid Gray", "Off White", "Silver Sand", "Deep Indigo Navy", "Rustic Brown"],
+    "stock": 30,
+    "image": "/images/clothes/women/top/top1.png",
+    "sizes": ["S", "M", "L", "XL"],
+    "colors": ["Cream"],
     "category": "Apparel",
-    "subCategory": "Jeans",
-    "costPrice": 900,
-    "brand": "C-HUB Street"
+    "subCategory": "Top",
+    "costPrice": 800,
+    "brand": "C-HUB Originals"
   },
   {
-    "id": "prod-021",
-    "sku": "CHUB-PANTS-002",
-    "name": "Everyday Shorts - White",
-    "price": 1299,
-    "stock": 50,
-    "image": "/images/clothes/men/pants/pants1.png",
-    "sizes": ["28", "30", "32", "34", "36"],
-    "colors": ["White", "Charcoal", "Navy", "Yellow", "Red", "Green"],
+    "id": "clothes-women-top-White-S",
+    "sku": "CHUB-WTOP-002",
+    "name": "Peplum Top - White",
+    "price": 1799,
+    "stock": 30,
+    "image": "/images/clothes/women/top/top2.png",
+    "sizes": ["S", "M", "L", "XL"],
+    "colors": ["White"],
     "category": "Apparel",
-    "subCategory": "Shorts",
-    "costPrice": 650,
-    "brand": "C-HUB Street"
+    "subCategory": "Top",
+    "costPrice": 800,
+    "brand": "C-HUB Originals"
   },
   {
-    "id": "prod-022",
+    "id": "clothes-women-top-Sky Blue Gingham-S",
+    "sku": "CHUB-WTOP-003",
+    "name": "Peplum Top - Sky Blue Gingham",
+    "price": 1799,
+    "stock": 30,
+    "image": "/images/clothes/women/top/top3.png",
+    "sizes": ["S", "M", "L", "XL"],
+    "colors": ["Sky Blue Gingham"],
+    "category": "Apparel",
+    "subCategory": "Top",
+    "costPrice": 800,
+    "brand": "C-HUB Originals"
+  },
+  {
+    "id": "clothes-women-top-Sage Green-S",
+    "sku": "CHUB-WTOP-004",
+    "name": "Peplum Top - Sage Green",
+    "price": 1799,
+    "stock": 30,
+    "image": "/images/clothes/women/top/top4.png",
+    "sizes": ["S", "M", "L", "XL"],
+    "colors": ["Sage Green"],
+    "category": "Apparel",
+    "subCategory": "Top",
+    "costPrice": 800,
+    "brand": "C-HUB Originals"
+  },
+  {
+    "id": "clothes-women-top-Mocha Brown-S",
+    "sku": "CHUB-WTOP-005",
+    "name": "Peplum Top - Mocha Brown",
+    "price": 1799,
+    "stock": 30,
+    "image": "/images/clothes/women/top/top5.png",
+    "sizes": ["S", "M", "L", "XL"],
+    "colors": ["Mocha Brown"],
+    "category": "Apparel",
+    "subCategory": "Top",
+    "costPrice": 800,
+    "brand": "C-HUB Originals"
+  },
+  {
+    "id": "clothes-women-top-Obsidian Black-S",
+    "sku": "CHUB-WTOP-006",
+    "name": "Peplum Top - Obsidian Black",
+    "price": 1799,
+    "stock": 30,
+    "image": "/images/clothes/women/top/top6.png",
+    "sizes": ["S", "M", "L", "XL"],
+    "colors": ["Obsidian Black"],
+    "category": "Apparel",
+    "subCategory": "Top",
+    "costPrice": 800,
+    "brand": "C-HUB Originals"
+  },
+
+  // ============ WOMEN'S DRESSES ============
+  {
+    "id": "clothes-women-dress-Polka White-S",
+    "sku": "CHUB-WDRS-001",
+    "name": "Summer Halter Dress - Polka White",
+    "price": 2999,
+    "stock": 25,
+    "image": "/images/clothes/women/dress/dress1.png",
+    "sizes": ["S", "M", "L", "XL"],
+    "colors": ["Polka White"],
+    "category": "Apparel",
+    "subCategory": "Dress",
+    "costPrice": 1500,
+    "brand": "C-HUB Originals"
+  },
+  {
+    "id": "clothes-women-dress-Sky Stripe-S",
+    "sku": "CHUB-WDRS-002",
+    "name": "Summer Halter Dress - Sky Stripe",
+    "price": 2999,
+    "stock": 25,
+    "image": "/images/clothes/women/dress/dress2.png",
+    "sizes": ["S", "M", "L", "XL"],
+    "colors": ["Sky Stripe"],
+    "category": "Apparel",
+    "subCategory": "Dress",
+    "costPrice": 1500,
+    "brand": "C-HUB Originals"
+  },
+  {
+    "id": "clothes-women-dress-Buttercup Gingham-S",
+    "sku": "CHUB-WDRS-003",
+    "name": "Summer Halter Dress - Buttercup Gingham",
+    "price": 2999,
+    "stock": 25,
+    "image": "/images/clothes/women/dress/dress3.png",
+    "sizes": ["S", "M", "L", "XL"],
+    "colors": ["Buttercup Gingham"],
+    "category": "Apparel",
+    "subCategory": "Dress",
+    "costPrice": 1500,
+    "brand": "C-HUB Originals"
+  },
+  {
+    "id": "clothes-women-dress-Rose Gingham-S",
+    "sku": "CHUB-WDRS-004",
+    "name": "Summer Halter Dress - Rose Gingham",
+    "price": 2999,
+    "stock": 25,
+    "image": "/images/clothes/women/dress/dress4.png",
+    "sizes": ["S", "M", "L", "XL"],
+    "colors": ["Rose Gingham"],
+    "category": "Apparel",
+    "subCategory": "Dress",
+    "costPrice": 1500,
+    "brand": "C-HUB Originals"
+  },
+  {
+    "id": "clothes-women-dress-Ocean Gingham-S",
+    "sku": "CHUB-WDRS-005",
+    "name": "Summer Halter Dress - Ocean Gingham",
+    "price": 2999,
+    "stock": 25,
+    "image": "/images/clothes/women/dress/dress5.png",
+    "sizes": ["S", "M", "L", "XL"],
+    "colors": ["Ocean Gingham"],
+    "category": "Apparel",
+    "subCategory": "Dress",
+    "costPrice": 1500,
+    "brand": "C-HUB Originals"
+  },
+  {
+    "id": "clothes-women-dress-Midnight Polka-S",
+    "sku": "CHUB-WDRS-006",
+    "name": "Summer Halter Dress - Midnight Polka",
+    "price": 2999,
+    "stock": 25,
+    "image": "/images/clothes/women/dress/dress6.png",
+    "sizes": ["S", "M", "L", "XL"],
+    "colors": ["Midnight Polka"],
+    "category": "Apparel",
+    "subCategory": "Dress",
+    "costPrice": 1500,
+    "brand": "C-HUB Originals"
+  },
+
+  // ============ MEN'S SHOES ============
+  {
+    "id": "shoes-men-sneakers-Chalk White-7",
     "sku": "CHUB-SNK-001",
     "name": "Urban Sneakers - Chalk White",
     "price": 2499,
     "stock": 40,
     "image": "/images/clothes/men/shoes/shoes1.png",
     "sizes": ["7", "8", "9", "10", "11"],
-    "colors": ["Chalk White", "Stealth Charcoal", "Deep Navy", "Solar Yellow", "Crimson Red", "Emerald Green"],
+    "colors": ["Chalk White"],
     "category": "Footwear",
     "subCategory": "Sneakers",
     "costPrice": 1200,
     "brand": "C-HUB Kicks"
   },
   {
-    "id": "prod-023",
+    "id": "shoes-men-sneakers-Stealth Charcoal-7",
     "sku": "CHUB-SNK-002",
     "name": "Urban Sneakers - Stealth Charcoal",
     "price": 2499,
@@ -358,7 +494,7 @@ const INITIAL_PRODUCTS = [
     "brand": "C-HUB Kicks"
   },
   {
-    "id": "prod-024",
+    "id": "shoes-men-sneakers-Deep Navy-7",
     "sku": "CHUB-SNK-003",
     "name": "Urban Sneakers - Deep Navy",
     "price": 2499,
@@ -371,43 +507,61 @@ const INITIAL_PRODUCTS = [
     "costPrice": 1200,
     "brand": "C-HUB Kicks"
   },
+
+  // ============ PANTS ============
   {
-    "id": "prod-025",
+    "id": "clothes-men-pants-Light Stone-28",
+    "sku": "CHUB-PANTS-001",
+    "name": "Classic Denim Jeans - Light Stone",
+    "price": 1799,
+    "stock": 40,
+    "image": "/images/clothes/men/pants/pants1.png",
+    "sizes": ["28", "30", "32", "34", "36"],
+    "colors": ["Light Stone"],
+    "category": "Apparel",
+    "subCategory": "Jeans",
+    "costPrice": 900,
+    "brand": "C-HUB Street"
+  },
+  
+  // ============ ACCESSORIES ============
+  {
+    "id": "clothes-men-accessories-Black-OS",
     "sku": "CHUB-BAG-001",
     "name": "Everyday Crossbody Bag - Stone",
     "price": 1499,
     "stock": 50,
     "image": "/images/clothes/men/accessories/black.png",
     "sizes": ["OS", "S", "M", "L"],
-    "colors": ["Stone", "Stealth Charcoal", "Navy Blue", "Vibrant Yellow", "Crimson Red", "Forest Green"],
+    "colors": ["Stone"],
     "category": "Accessories",
     "subCategory": "Bags",
     "costPrice": 700,
     "brand": "C-HUB Gear"
   },
   {
-    "id": "prod-026",
-    "sku": "CHUB-BAG-002",
+    "id": "clothes-men-accessories-White-OS",
+    "sku": "CHUB-CAP-001",
     "name": "Classic Street Cap - White",
     "price": 799,
     "stock": 60,
     "image": "/images/clothes/men/accessories/white.png",
     "sizes": ["OS", "S", "M", "L"],
-    "colors": ["White", "Charcoal", "Navy", "Yellow", "Red", "Green"],
+    "colors": ["White"],
     "category": "Accessories",
     "subCategory": "Hats",
     "costPrice": 350,
     "brand": "C-HUB Gear"
   },
   {
-    "id": "prod-027",
-    "sku": "CHUB-SOCKS-001",
+    "id": "clothes-men-accessories-White-S",
+    "sku": "CHUB-SOCK-001",
     "name": "Cushioned Crew Socks - White",
     "price": 399,
     "stock": 100,
     "image": "/images/clothes/men/accessories/white.png",
     "sizes": ["S", "M", "L"],
-    "colors": ["White", "Charcoal", "Navy", "Yellow", "Red", "Green"],
+    "colors": ["White"],
     "category": "Accessories",
     "subCategory": "Socks",
     "costPrice": 150,
@@ -689,10 +843,10 @@ app.post('/api/orders', (req, res) => {
       
       let imageUrl = null;
       // ✅ I-CONVERT LAHAT NG IMAGES SA TAMANG FULL URL
-if (product && product.image) {
-  let fullImageUrl = product.image;
-  
-  // Kung may leading slash (/), lagyan ng backend URL
+      if (product && product.image) {
+        let fullImageUrl = product.image;
+        
+        // Kung may leading slash (/), lagyan ng backend URL
         if (fullImageUrl.startsWith('/')) {
           fullImageUrl = `${BASE_URL}${fullImageUrl}`;
         }
