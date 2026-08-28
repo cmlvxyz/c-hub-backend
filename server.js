@@ -13,11 +13,10 @@ const app = express();
 const PORT = process.env.PORT || 3013;
 
 app.use(cors({
-  origin: '*',
+  origin: '*',  // ✅ Allow all origins (para sa Vercel)
   methods: ['GET', 'POST', 'PATCH', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization']
 }));
-app.use(express.json());
 
 app.use('/images', express.static(path.join(__dirname, 'public/images')));
 
