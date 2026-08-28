@@ -656,23 +656,14 @@ const enrichOrderItemsWithImages = (order) => {
       if (product) console.log(`    ✅ Found by exact name: ${product.name}`);
     }
     
-    // 5. Hanapin gamit ang partial name
+    // 5. ✅ UPDATED: Hanapin gamit ang base name (without size/color)
     if (!product && item.name) {
-      const itemNameLower = item.name.toLowerCase();
-      product = products.find(p => p.name.toLowerCase().includes(itemNameLower));
-      if (product) console.log(`    ✅ Found by partial name: ${product.name}`);
-    }
-    
-    // 6. Hanapin gamit ang subCategory
-    if (!product && item.subCategory) {
-      product = products.find(p => p.subCategory === item.subCategory);
-      if (product) console.log(`    ✅ Found by subCategory: ${product.subCategory}`);
-    }
-    
-    // 7. Hanapin gamit ang color
-    if (!product && item.color) {
-      product = products.find(p => p.colors && p.colors.some(c => c.toLowerCase() === item.color.toLowerCase()));
-      if (product) console.log(`    ✅ Found by color: ${product.colors}`);
+      const itemBaseName = item.name.split(' - ')[0];
+      product = products.find(p => {
+        const productBaseName = p.name.split(' - ')[0];
+        return productBaseName === itemBaseName;
+      });
+      if (product) console.log(`    ✅ Found by base name: ${product.name}`);
     }
     
     // ✅ KUNG MAY PRODUCT, GAMITIN ANG IMAGE
@@ -720,7 +711,7 @@ function broadcastSSE(event, data) {
 
 // ============ API ROUTES ============
 
-// ✅ SYNC ORDERS FROM STORE
+// ✅ SYNC ORDERS FROM STORE - UPDATED: Hindi na bumabalik ang deleted orders
 app.post('/api/orders/sync', (req, res) => {
   try {
     const { orders: clientOrders } = req.body;
@@ -735,32 +726,39 @@ app.post('/api/orders/sync', (req, res) => {
     // I-enrich ang bawat order ng product images
     const enrichedOrders = clientOrders.map(order => enrichOrderItemsWithImages(order));
     
-    // I-load ang existing orders
+    // I-load ang existing orders at i-filter ang mga deleted
     let existingOrders = readData(ORDERS_FILE);
     if (!Array.isArray(existingOrders)) {
       existingOrders = [];
     }
     
+    // ✅ FILTER OUT DELETED ORDERS - HINDI NA BABALIK
+    const activeOrders = existingOrders.filter(o => 
+      o.status !== 'Deleted' && 
+      o.status !== 'deleted' &&
+      !o._deleted
+    );
+    
     // I-merge ang orders
-    const existingIds = new Set(existingOrders.map(o => o.orderId));
+    const existingIds = new Set(activeOrders.map(o => o.orderId));
     
     enrichedOrders.forEach(clientOrder => {
       if (!existingIds.has(clientOrder.orderId)) {
-        existingOrders.push(clientOrder);
+        activeOrders.push(clientOrder);
         existingIds.add(clientOrder.orderId);
       } else {
-        const index = existingOrders.findIndex(o => o.orderId === clientOrder.orderId);
+        const index = activeOrders.findIndex(o => o.orderId === clientOrder.orderId);
         if (index !== -1) {
-          existingOrders[index] = { ...existingOrders[index], ...clientOrder };
+          activeOrders[index] = { ...activeOrders[index], ...clientOrder };
         }
       }
     });
     
-    writeData(ORDERS_FILE, existingOrders);
-    broadcastSSE('order_sync', { count: existingOrders.length });
+    writeData(ORDERS_FILE, activeOrders);
+    broadcastSSE('order_sync', { count: activeOrders.length });
     
-    console.log(`✅ Synced ${existingOrders.length} total orders`);
-    res.json({ success: true, count: existingOrders.length });
+    console.log(`✅ Synced ${activeOrders.length} total orders (deleted orders removed)`);
+    res.json({ success: true, count: activeOrders.length });
     
   } catch (error) {
     console.error('❌ Failed to sync orders:', error);
@@ -775,10 +773,17 @@ app.get('/api/orders', (req, res) => {
     orders = [];
   }
   
-  console.log(`📦 Loading ${orders.length} orders...`);
+  // ✅ FILTER OUT DELETED ORDERS
+  const activeOrders = orders.filter(o => 
+    o.status !== 'Deleted' && 
+    o.status !== 'deleted' &&
+    !o._deleted
+  );
+  
+  console.log(`📦 Loading ${activeOrders.length} active orders...`);
   
   // I-enrich ang bawat order ng product images
-  const enrichedOrders = orders.map(order => enrichOrderItemsWithImages(order));
+  const enrichedOrders = activeOrders.map(order => enrichOrderItemsWithImages(order));
   
   res.json(enrichedOrders);
 });
@@ -789,7 +794,15 @@ app.get('/api/orders/:id', (req, res) => {
   if (!Array.isArray(orders)) {
     orders = [];
   }
-  const order = orders.find(o => o.orderId === req.params.id);
+  
+  // ✅ FILTER OUT DELETED ORDERS
+  const activeOrders = orders.filter(o => 
+    o.status !== 'Deleted' && 
+    o.status !== 'deleted' &&
+    !o._deleted
+  );
+  
+  const order = activeOrders.find(o => o.orderId === req.params.id);
   
   if (order) {
     const enrichedOrder = enrichOrderItemsWithImages(order);
@@ -808,6 +821,13 @@ app.post('/api/orders', (req, res) => {
     if (!Array.isArray(orders)) {
       orders = [];
     }
+    
+    // ✅ FILTER OUT DELETED ORDERS
+    const activeOrders = orders.filter(o => 
+      o.status !== 'Deleted' && 
+      o.status !== 'deleted' &&
+      !o._deleted
+    );
     
     const products = readData(PRODUCTS_FILE);
     const BASE_URL = 'https://c-hub-admin.vercel.app';
@@ -836,9 +856,13 @@ app.post('/api/orders', (req, res) => {
       if (!product && item.name) {
         product = products.find(p => p.name === item.name);
       }
+      // ✅ UPDATED: Gumamit ng base name instead of includes()
       if (!product && item.name) {
-        const itemNameLower = item.name.toLowerCase();
-        product = products.find(p => p.name.toLowerCase().includes(itemNameLower));
+        const itemBaseName = item.name.split(' - ')[0];
+        product = products.find(p => {
+          const productBaseName = p.name.split(' - ')[0];
+          return productBaseName === itemBaseName;
+        });
       }
       
       let imageUrl = null;
@@ -875,8 +899,8 @@ app.post('/api/orders', (req, res) => {
       writeData(PRODUCTS_FILE, products);
     }
 
-    orders.unshift(newOrder);
-    writeData(ORDERS_FILE, orders);
+    activeOrders.unshift(newOrder);
+    writeData(ORDERS_FILE, activeOrders);
 
     broadcastSSE('new_order', newOrder);
     broadcastSSE('inventory_sync', products);
@@ -902,22 +926,29 @@ app.patch('/api/orders/:id', (req, res) => {
       orders = [];
     }
     
-    const index = orders.findIndex(o => o.orderId === id);
+    // ✅ FILTER OUT DELETED ORDERS
+    const activeOrders = orders.filter(o => 
+      o.status !== 'Deleted' && 
+      o.status !== 'deleted' &&
+      !o._deleted
+    );
+    
+    const index = activeOrders.findIndex(o => o.orderId === id);
     
     if (index === -1) {
       return res.status(404).json({ error: 'Order not found' });
     }
 
     const updatedOrder = {
-      ...orders[index],
+      ...activeOrders[index],
       ...req.body,
       updatedAt: new Date().toISOString()
     };
     
     const enrichedOrder = enrichOrderItemsWithImages(updatedOrder);
     
-    orders[index] = enrichedOrder;
-    writeData(ORDERS_FILE, orders);
+    activeOrders[index] = enrichedOrder;
+    writeData(ORDERS_FILE, activeOrders);
     
     broadcastSSE('order_update', { 
       orderId: id, 
@@ -934,7 +965,7 @@ app.patch('/api/orders/:id', (req, res) => {
   }
 });
 
-// DELETE ORDER
+// ✅ DELETE ORDER - PERMANENT DELETE
 app.delete('/api/orders/:id', (req, res) => {
   try {
     const { id } = req.params;
@@ -943,19 +974,21 @@ app.delete('/api/orders/:id', (req, res) => {
       orders = [];
     }
     
-    const index = orders.findIndex(o => o.orderId === id);
+    // ✅ FIND THE ORDER TO DELETE
+    const orderIndex = orders.findIndex(o => o.orderId === id);
     
-    if (index === -1) {
+    if (orderIndex === -1) {
       return res.status(404).json({ error: 'Order not found' });
     }
 
-    const deletedOrder = orders[index];
-    orders.splice(index, 1);
+    // ✅ PERMANENTLY DELETE THE ORDER
+    const deletedOrder = orders[orderIndex];
+    orders.splice(orderIndex, 1);
     writeData(ORDERS_FILE, orders);
     
     broadcastSSE('order_deleted', { orderId: id });
     
-    console.log(`🗑️ Order ${id} deleted`);
+    console.log(`🗑️ Order ${id} permanently deleted`);
     res.json({ success: true, order: deletedOrder });
     
   } catch (error) {
@@ -970,12 +1003,12 @@ app.get('/api/products', (req, res) => {
   res.json(products);
 });
 
-// Update product
+// ✅ Update product - UPDATED: Can find by id OR sku
 app.patch('/api/products/:id', (req, res) => {
   try {
     const { id } = req.params;
     const products = readData(PRODUCTS_FILE);
-    const index = products.findIndex(p => p.id === id);
+    const index = products.findIndex(p => p.id === id || p.sku === id);
     
     if (index === -1) {
       return res.status(404).json({ error: 'Product not found' });
@@ -1217,7 +1250,15 @@ app.post('/api/gateways/:id/test-webhook', (req, res) => {
 app.get('/api/analytics', (req, res) => {
   const orders = readData(ORDERS_FILE);
   const products = readData(PRODUCTS_FILE);
-  const validOrders = orders.filter(o => o.status !== 'Cancelled' && o.status !== 'Refunded');
+  
+  // ✅ FILTER OUT DELETED ORDERS
+  const activeOrders = orders.filter(o => 
+    o.status !== 'Deleted' && 
+    o.status !== 'deleted' &&
+    !o._deleted
+  );
+  
+  const validOrders = activeOrders.filter(o => o.status !== 'Cancelled' && o.status !== 'Refunded');
   const totalRevenue = validOrders.reduce((sum, o) => sum + (o.total || 0), 0);
   const totalCost = validOrders.reduce((sum, o) => sum + (o.costTotal || 0), 0);
   const grossProfit = totalRevenue - totalCost;
@@ -1229,10 +1270,10 @@ app.get('/api/analytics', (req, res) => {
     grossProfit,
     grossMarginPct,
     aov,
-    totalOrders: orders.length,
-    completedOrders: orders.filter(o => o.status === 'Completed').length,
-    activeOrders: orders.filter(o => ['To Ship', 'Shipped', 'Out for Delivery'].includes(o.status)).length,
-    toPayOrders: orders.filter(o => o.status === 'To Pay').length,
+    totalOrders: activeOrders.length,
+    completedOrders: activeOrders.filter(o => o.status === 'Completed').length,
+    activeOrders: activeOrders.filter(o => ['To Ship', 'Shipped', 'Out for Delivery'].includes(o.status)).length,
+    toPayOrders: activeOrders.filter(o => o.status === 'To Pay').length,
     channelData: { 'Online Store': totalRevenue * 0.6 },
     gatewayData: { 'GCash': 5, 'Maya': 3, 'COD': 2 },
     inventoryValuation: products.reduce((sum, p) => sum + (p.stock || 0) * (p.costPrice || 500), 0),
@@ -1263,7 +1304,12 @@ app.get('/api/orders/stream/public', (req, res) => {
   res.write(`event: connected\ndata: ${JSON.stringify({ status: 'connected', clientId })}\n\n`);
 
   const orders = readData(ORDERS_FILE);
-  res.write(`event: orders_count\ndata: ${JSON.stringify({ count: orders.length })}\n\n`);
+  const activeOrders = orders.filter(o => 
+    o.status !== 'Deleted' && 
+    o.status !== 'deleted' &&
+    !o._deleted
+  );
+  res.write(`event: orders_count\ndata: ${JSON.stringify({ count: activeOrders.length })}\n\n`);
 
   const interval = setInterval(() => {
     res.write(`: ping\n\n`);
@@ -1297,10 +1343,17 @@ app.delete('/api/orders/all', (req, res) => {
 app.get('/api/health', (req, res) => {
   const orders = readData(ORDERS_FILE);
   const products = readData(PRODUCTS_FILE);
+  
+  const activeOrders = orders.filter(o => 
+    o.status !== 'Deleted' && 
+    o.status !== 'deleted' &&
+    !o._deleted
+  );
+  
   res.json({ 
     status: 'healthy', 
     timestamp: new Date().toISOString(),
-    orders: orders.length,
+    orders: activeOrders.length,
     products: products.length,
     sseClients: sseClients.length
   });
