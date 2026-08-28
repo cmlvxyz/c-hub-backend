@@ -35,7 +35,7 @@
         "id": "clothes-women-top-White-XL",
         "name": "Peplum Top - White",
         "price": 1799,
-        "image": "https://c-hub-admin.vercel.app/images/clothes/men/t-shirts/white.png",
+        "image": "https://images.unsplash.com/photo-1521572267360-ee0c2909d518?w=500&auto=format&fit=crop&q=80",
         "size": "XL",
         "color": "White",
         "subCategory": "top",
@@ -71,8 +71,9 @@
     "discountCode": "",
     "total": 11595,
     "payment": "Cash on Delivery",
-    "status": "To Ship",
-    "createdAt": "2026-08-28T08:46:53.504Z"
+    "status": "Completed",
+    "createdAt": "2026-08-28T08:46:53.504Z",
+    "updatedAt": "2026-08-28T10:37:26.584Z"
   },
   {
     "orderId": "CHUB-567073",
@@ -113,8 +114,9 @@
     "discountCode": "",
     "total": 4498,
     "payment": "Cash on Delivery",
-    "status": "To Ship",
-    "createdAt": "2026-08-28T08:11:48.404Z"
+    "status": "Completed",
+    "createdAt": "2026-08-28T08:11:48.404Z",
+    "updatedAt": "2026-08-28T10:37:17.786Z"
   },
   {
     "orderId": "CHUB-824035",
@@ -155,9 +157,9 @@
     "discountCode": "PWD",
     "total": 3598,
     "payment": "Cash on Delivery",
-    "status": "To Ship",
+    "status": "Completed",
     "createdAt": "2026-08-28T07:51:27.054Z",
-    "updatedAt": "2026-08-28T07:51:43.095Z"
+    "updatedAt": "2026-08-28T10:37:15.554Z"
   },
   {
     "orderId": "CHUB-757142",
@@ -198,8 +200,9 @@
     "discountCode": "",
     "total": 4498,
     "payment": "Cash on Delivery",
-    "status": "To Ship",
-    "createdAt": "2026-08-28T07:10:24.011Z"
+    "status": "Completed",
+    "createdAt": "2026-08-28T07:10:24.011Z",
+    "updatedAt": "2026-08-28T10:37:10.435Z"
   },
   {
     "orderId": "CHUB-341002",
