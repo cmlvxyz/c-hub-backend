@@ -440,7 +440,7 @@ const writeData = (file, data) => {
   }
 };
 
-// ============ PRODUCT IMAGE ENRICHMENT - FIXED & ROBUST ============
+// ============ PRODUCT IMAGE ENRICHMENT - FIXED ============
 const enrichOrderItemsWithImages = (order) => {
   if (!order || !order.items || order.items.length === 0) {
     return order;
@@ -452,36 +452,17 @@ const enrichOrderItemsWithImages = (order) => {
   console.log(`🔍 Enriching ${order.items.length} items for order ${order.orderId}`);
   
   const enrichedItems = order.items.map(item => {
-    console.log(`  - Looking for product: "${item.name}" (id: ${item.id || item.productId || 'N/A'})`);
+    console.log(`  - Looking for product: "${item.name}"`);
     
-    // Hanapin ang product gamit ang iba't ibang paraan
     let product = null;
     
-    // 1. Hanapin gamit ang productId
-    if (item.productId) {
-      product = products.find(p => p.id === item.productId);
-      if (product) console.log(`    ✅ Found by productId: ${product.id}`);
-    }
-    
-    // 2. Hanapin gamit ang id
-    if (!product && item.id) {
-      product = products.find(p => p.id === item.id);
-      if (product) console.log(`    ✅ Found by id: ${product.id}`);
-    }
-    
-    // 3. Hanapin gamit ang sku
-    if (!product && item.sku) {
-      product = products.find(p => p.sku === item.sku);
-      if (product) console.log(`    ✅ Found by sku: ${product.sku}`);
-    }
-    
-    // 4. Hanapin gamit ang exact name
-    if (!product && item.name) {
+    // ✅ 1. Hanapin gamit ang exact name
+    if (item.name) {
       product = products.find(p => p.name === item.name);
       if (product) console.log(`    ✅ Found by exact name: ${product.name}`);
     }
     
-    // 5. ✅ UPDATED: Hanapin gamit ang base name (without size/color)
+    // ✅ 2. Hanapin gamit ang base name (without size/color)
     if (!product && item.name) {
       const itemBaseName = item.name.split(' - ')[0];
       product = products.find(p => {
@@ -489,6 +470,21 @@ const enrichOrderItemsWithImages = (order) => {
         return productBaseName === itemBaseName;
       });
       if (product) console.log(`    ✅ Found by base name: ${product.name}`);
+    }
+    
+    // ✅ 3. Hanapin gamit ang partial match (last resort)
+    if (!product && item.name) {
+      const itemNameLower = item.name.toLowerCase();
+      // I-sort para ma-prioritize ang mas specific na match
+      const matches = products.filter(p => 
+        p.name.toLowerCase().includes(itemNameLower) || 
+        itemNameLower.includes(p.name.toLowerCase())
+      );
+      // Kunin ang pinaka-specific na match (pinakamahabang name)
+      if (matches.length > 0) {
+        product = matches.reduce((a, b) => a.name.length > b.name.length ? a : b);
+        console.log(`    ✅ Found by partial match: ${product.name}`);
+      }
     }
     
     // ✅ KUNG MAY PRODUCT, GAMITIN ANG IMAGE
@@ -501,16 +497,8 @@ const enrichOrderItemsWithImages = (order) => {
       return { ...item, image: imageUrl };
     }
     
-    // ✅ FALLBACK: Gumamit ng default image (base sa category)
+    // ✅ FALLBACK: Default image
     let fallbackImage = 'https://images.unsplash.com/photo-1521572267360-ee0c2909d518?w=500&auto=format&fit=crop&q=80';
-    if (item.subCategory === 'Sneakers') {
-      fallbackImage = 'https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=500&auto=format&fit=crop&q=80';
-    } else if (item.subCategory === 'T-Shirts') {
-      fallbackImage = 'https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=500&auto=format&fit=crop&q=80';
-    } else if (item.subCategory === 'Hoodies & Sweats') {
-      fallbackImage = 'https://images.unsplash.com/photo-1556821840-3a63f95609a7?w=500&auto=format&fit=crop&q=80';
-    }
-    
     console.log(`    📷 Using fallback for "${item.name}"`);
     return { ...item, image: fallbackImage };
   });
