@@ -33,7 +33,13 @@ const ORDERS_FILE = path.join(DATA_DIR, 'orders.json');
 const PRODUCTS_FILE = path.join(DATA_DIR, 'products.json');
 const REVIEWS_FILE = path.join(DATA_DIR, 'reviews.json');
 
-const INITIAL_PRODUCTS = [
+
+// ============ INITIALIZE FILES ============
+if (!fs.existsSync(ORDERS_FILE)) {
+  fs.writeFileSync(ORDERS_FILE, JSON.stringify([]));
+}
+if (!fs.existsSync(PRODUCTS_FILE)) {
+  const INITIAL_PRODUCTS = [
   // ============ MEN'S T-SHIRTS ============
   {
     "id": "clothes-men-tshirt-White-XL",
@@ -559,13 +565,7 @@ const INITIAL_PRODUCTS = [
   // ============ ACCESSORIES ============
   // Wala pang images sa products.ts - skip muna
 ];
-
-// ============ INITIALIZE FILES ============
-if (!fs.existsSync(ORDERS_FILE)) {
-  fs.writeFileSync(ORDERS_FILE, JSON.stringify([]));
-}
-if (!fs.existsSync(PRODUCTS_FILE)) {
-  fs.writeFileSync(PRODUCTS_FILE, JSON.stringify([]));
+  fs.writeFileSync(PRODUCTS_FILE, JSON.stringify(INITIAL_PRODUCTS, null, 2));
 }
 if (!fs.existsSync(REVIEWS_FILE)) {
   fs.writeFileSync(REVIEWS_FILE, JSON.stringify([]));
