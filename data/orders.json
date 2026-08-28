@@ -1,5 +1,90 @@
 [
   {
+    "orderId": "CHUB-567073",
+    "date": "Aug 28, 2026",
+    "customer": {
+      "name": "Edrian Clavel",
+      "email": "edrian.clavel.delacruz@apcas.ph.education",
+      "phone": "09165328017",
+      "address": "014 SF II LIMAY BATAAN"
+    },
+    "items": [
+      {
+        "id": "shoes-men-sneakers-Stealth Charcoal-7",
+        "name": "Urban Sneakers - Stealth Charcoal",
+        "price": 2499,
+        "image": "https://c-hub-backend-ijy4.onrender.com/images/clothes/men/shoes/shoes2.png",
+        "size": "7",
+        "color": "Stealth Charcoal",
+        "subCategory": "sneakers",
+        "gender": "men",
+        "qty": 1
+      },
+      {
+        "id": "clothes-men-tshirt-White-XL",
+        "name": "Premium T-Shirt - White",
+        "price": 1999,
+        "image": "https://c-hub-backend-ijy4.onrender.com/images/clothes/men/t-shirts/white.png",
+        "size": "XL",
+        "color": "White",
+        "subCategory": "tshirt",
+        "gender": "men",
+        "qty": 1
+      }
+    ],
+    "subtotal": 4498,
+    "shipping": 0,
+    "discount": 0,
+    "discountCode": "",
+    "total": 4498,
+    "payment": "Cash on Delivery",
+    "status": "To Ship",
+    "createdAt": "2026-08-28T08:11:48.404Z"
+  },
+  {
+    "orderId": "CHUB-824035",
+    "date": "Aug 28, 2026",
+    "customer": {
+      "name": "Edrian Dela Cruz",
+      "email": "edrian.clavel.delacruz@apcas.ph.education",
+      "phone": "0916532017",
+      "address": "014/NATIONAL ROAD/ST.FRANCIS II/LIMAY/BATAAN/2103"
+    },
+    "items": [
+      {
+        "id": "shoes-men-sneakers-Stealth Charcoal-7",
+        "name": "Urban Sneakers - Stealth Charcoal",
+        "price": 2499,
+        "image": "https://c-hub-backend-ijy4.onrender.com/images/clothes/men/shoes/shoes2.png",
+        "size": "7",
+        "color": "Stealth Charcoal",
+        "subCategory": "sneakers",
+        "gender": "men",
+        "qty": 1
+      },
+      {
+        "id": "clothes-men-tshirt-White-XL",
+        "name": "Premium T-Shirt - White",
+        "price": 1999,
+        "image": "https://c-hub-backend-ijy4.onrender.com/images/clothes/men/t-shirts/white.png",
+        "size": "XL",
+        "color": "White",
+        "subCategory": "tshirt",
+        "gender": "men",
+        "qty": 1
+      }
+    ],
+    "subtotal": 4498,
+    "shipping": 0,
+    "discount": 900,
+    "discountCode": "PWD",
+    "total": 3598,
+    "payment": "Cash on Delivery",
+    "status": "To Ship",
+    "createdAt": "2026-08-28T07:51:27.054Z",
+    "updatedAt": "2026-08-28T07:51:43.095Z"
+  },
+  {
     "orderId": "CHUB-757142",
     "date": "Aug 28, 2026",
     "customer": {
@@ -13,7 +98,7 @@
         "id": "shoes-men-sneakers-Stealth Charcoal-7",
         "name": "Urban Sneakers - Stealth Charcoal",
         "price": 2499,
-        "image": "http://localhost:3013/images/clothes/men/shoes/shoes2.png",
+        "image": "https://c-hub-backend-ijy4.onrender.com/images/clothes/men/shoes/shoes2.png",
         "size": "7",
         "color": "Stealth Charcoal",
         "subCategory": "sneakers",
@@ -24,7 +109,7 @@
         "id": "clothes-men-tshirt-White-XL",
         "name": "Premium T-Shirt - White",
         "price": 1999,
-        "image": "http://localhost:3013/images/clothes/men/t-shirts/white.png",
+        "image": "https://c-hub-backend-ijy4.onrender.com/images/clothes/men/t-shirts/white.png",
         "size": "XL",
         "color": "White",
         "subCategory": "tshirt",

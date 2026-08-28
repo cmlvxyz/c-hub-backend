@@ -10,7 +10,7 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 const app = express();
-const PORT = process.env.PORT || 3013; // ✅ Tama para sa Render (auto-assign ng port)
+const PORT = process.env.PORT || 3013;
 
 app.use(cors({
   origin: '*',
@@ -33,7 +33,7 @@ const PRODUCTS_FILE = path.join(DATA_DIR, 'products.json');
 const REVIEWS_FILE = path.join(DATA_DIR, 'reviews.json');
 const PURCHASE_ORDERS_FILE = path.join(DATA_DIR, 'purchase_orders.json');
 
-// ✅ FULL PRODUCTS DATA - Ilagay mo dito yung buong laman ng products.json mo
+// ✅ INITIAL DATA (Ilagay mo dito yung buong laman ng products.json)
 const INITIAL_PRODUCTS = [
   {
     "id": "prod-001",
@@ -468,7 +468,6 @@ const enrichOrderItemsWithImages = (order) => {
   }
   
   const products = readData(PRODUCTS_FILE);
-  // ✅ PALITAN MO ITO NG URL NG RENDER MO
   const BASE_URL = 'https://c-hub-backend-ijy4.onrender.com';
   
   console.log(`🔍 Enriching ${order.items.length} items for order ${order.orderId}`);
@@ -657,7 +656,6 @@ app.post('/api/orders', (req, res) => {
     }
     
     const products = readData(PRODUCTS_FILE);
-    // ✅ PALITAN MO ITO NG URL NG RENDER MO
     const BASE_URL = 'https://c-hub-backend-ijy4.onrender.com';
     
     const newOrder = {
@@ -690,12 +688,22 @@ app.post('/api/orders', (req, res) => {
       }
       
       let imageUrl = null;
-      if (product && product.image) {
-        imageUrl = product.image;
-        if (imageUrl.startsWith('/')) {
-          imageUrl = `${BASE_URL}${imageUrl}`;
+      // ✅ I-CONVERT LAHAT NG IMAGES SA TAMANG FULL URL
+if (product && product.image) {
+  let fullImageUrl = product.image;
+  
+  // Kung may leading slash (/), lagyan ng backend URL
+        if (fullImageUrl.startsWith('/')) {
+          fullImageUrl = `${BASE_URL}${fullImageUrl}`;
         }
+        // Kung wala pang http, lagyan ng buong URL
+        else if (!fullImageUrl.startsWith('http') && !fullImageUrl.startsWith('https')) {
+          fullImageUrl = `${BASE_URL}/${fullImageUrl}`;
+        }
+        
+        imageUrl = fullImageUrl;
       } else {
+        // Fallback para sa generic na item
         imageUrl = 'https://images.unsplash.com/photo-1521572267360-ee0c2909d518?w=500&auto=format&fit=crop&q=80';
       }
       
