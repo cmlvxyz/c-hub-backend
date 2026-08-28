@@ -12,7 +12,6 @@ const __dirname = path.dirname(__filename);
 const app = express();
 const PORT = process.env.PORT || 3013;
 
-// ✅ CORS
 app.use(cors({
   origin: '*',
   methods: ['GET', 'POST', 'PATCH', 'DELETE', 'OPTIONS'],
@@ -20,7 +19,6 @@ app.use(cors({
 }));
 app.use(express.json());
 
-// ✅ Serve static images
 app.use('/images', express.static(path.join(__dirname, 'public/images')));
 
 // ============ DATA DIRECTORY ============
@@ -33,14 +31,9 @@ const ORDERS_FILE = path.join(DATA_DIR, 'orders.json');
 const PRODUCTS_FILE = path.join(DATA_DIR, 'products.json');
 const REVIEWS_FILE = path.join(DATA_DIR, 'reviews.json');
 
-
-// ============ INITIALIZE FILES ============
-if (!fs.existsSync(ORDERS_FILE)) {
-  fs.writeFileSync(ORDERS_FILE, JSON.stringify([]));
-}
-if (!fs.existsSync(PRODUCTS_FILE)) {
-  const INITIAL_PRODUCTS = [
-  // ============ MEN'S T-SHIRTS ============
+// ============ INITIALIZE PRODUCTS ============
+const INITIAL_PRODUCTS = [
+  // MEN'S T-SHIRTS
   {
     "id": "clothes-men-tshirt-White-XL",
     "sku": "CHUB-TEE-001",
@@ -126,7 +119,7 @@ if (!fs.existsSync(PRODUCTS_FILE)) {
     "brand": "C-HUB Originals"
   },
   
-  // ============ MEN'S HOODIES ============
+  // MEN'S HOODIES
   {
     "id": "clothes-men-hoodie-Beige-XL",
     "sku": "CHUB-HD-001",
@@ -212,7 +205,7 @@ if (!fs.existsSync(PRODUCTS_FILE)) {
     "brand": "C-HUB Originals"
   },
   
-  // ============ MEN'S SWEATSHIRTS ============
+  // MEN'S SWEATSHIRTS
   {
     "id": "clothes-men-sweatshirt-White-XL",
     "sku": "CHUB-SW-001",
@@ -298,7 +291,7 @@ if (!fs.existsSync(PRODUCTS_FILE)) {
     "brand": "C-HUB Originals"
   },
 
-  // ============ WOMEN'S TOPS ============
+  // WOMEN'S TOPS
   {
     "id": "clothes-women-top-Cream-S",
     "sku": "CHUB-WTOP-001",
@@ -384,7 +377,7 @@ if (!fs.existsSync(PRODUCTS_FILE)) {
     "brand": "C-HUB Originals"
   },
 
-  // ============ WOMEN'S DRESSES ============
+  // WOMEN'S DRESSES
   {
     "id": "clothes-women-dress-Polka White-S",
     "sku": "CHUB-WDRS-001",
@@ -470,7 +463,7 @@ if (!fs.existsSync(PRODUCTS_FILE)) {
     "brand": "C-HUB Originals"
   },
 
-  // ============ PANTS - MEN ============
+  // PANTS - MEN
   {
     "id": "clothes-men-pants-Light Stone-28",
     "sku": "CHUB-PANTS-001",
@@ -554,19 +547,19 @@ if (!fs.existsSync(PRODUCTS_FILE)) {
     "subCategory": "Jeans",
     "costPrice": 900,
     "brand": "C-HUB Street"
-  },
-
-  // ============ PANTS - WOMEN ============
-  // Wala pang images sa products.ts - skip muna
-
-  // ============ MEN'S SHOES ============
-  // Wala pang images sa products.ts - skip muna
-
-  // ============ ACCESSORIES ============
-  // Wala pang images sa products.ts - skip muna
+  }
 ];
+
+// ============ INITIALIZE FILES ============
+if (!fs.existsSync(ORDERS_FILE)) {
+  fs.writeFileSync(ORDERS_FILE, JSON.stringify([]));
+}
+
+if (!fs.existsSync(PRODUCTS_FILE)) {
+  console.log('📦 Creating products.json with initial products...');
   fs.writeFileSync(PRODUCTS_FILE, JSON.stringify(INITIAL_PRODUCTS, null, 2));
 }
+
 if (!fs.existsSync(REVIEWS_FILE)) {
   fs.writeFileSync(REVIEWS_FILE, JSON.stringify([]));
 }
@@ -621,24 +614,19 @@ app.get('/api/debug/products', (req, res) => {
 });
 
 // ============ ORDERS ============
-
-// Get all orders
 app.get('/api/orders', (req, res) => {
   const orders = readData(ORDERS_FILE);
   res.json(orders);
 });
 
-// Sync orders from store
 app.post('/api/orders/sync', (req, res) => {
   try {
     const { orders } = req.body;
     if (!Array.isArray(orders)) {
       return res.status(400).json({ error: 'Invalid orders data' });
     }
-    
     console.log(`🔄 Syncing ${orders.length} orders...`);
     writeData(ORDERS_FILE, orders);
-    
     res.json({ success: true, count: orders.length });
   } catch (error) {
     console.error('❌ Sync failed:', error);
@@ -646,11 +634,9 @@ app.post('/api/orders/sync', (req, res) => {
   }
 });
 
-// Create order
 app.post('/api/orders', (req, res) => {
   try {
     const orders = readData(ORDERS_FILE);
-    
     const newOrder = {
       ...req.body,
       orderId: req.body.orderId || `CHUB-${Math.floor(100000 + Math.random() * 900000)}`,
@@ -662,60 +648,44 @@ app.post('/api/orders', (req, res) => {
       createdAt: new Date().toISOString(),
       status: req.body.status || 'To Ship'
     };
-
     orders.unshift(newOrder);
     writeData(ORDERS_FILE, orders);
-
     console.log(`✅ Order saved: ${newOrder.orderId}`);
     res.status(201).json({ success: true, order: newOrder });
-    
   } catch (error) {
     console.error('❌ Error creating order:', error);
     res.status(500).json({ error: error.message });
   }
 });
 
-// Update order
 app.patch('/api/orders/:id', (req, res) => {
   try {
     const { id } = req.params;
     const orders = readData(ORDERS_FILE);
     const index = orders.findIndex(o => o.orderId === id);
-    
     if (index === -1) {
       return res.status(404).json({ error: 'Order not found' });
     }
-
-    orders[index] = {
-      ...orders[index],
-      ...req.body,
-      updatedAt: new Date().toISOString()
-    };
-
+    orders[index] = { ...orders[index], ...req.body, updatedAt: new Date().toISOString() };
     writeData(ORDERS_FILE, orders);
     res.json({ success: true, order: orders[index] });
-    
   } catch (error) {
     console.error('❌ Error updating order:', error);
     res.status(500).json({ error: error.message });
   }
 });
 
-// Delete order
 app.delete('/api/orders/:id', (req, res) => {
   try {
     const { id } = req.params;
     const orders = readData(ORDERS_FILE);
     const filtered = orders.filter(o => o.orderId !== id);
-    
     if (filtered.length === orders.length) {
       return res.status(404).json({ error: 'Order not found' });
     }
-
     writeData(ORDERS_FILE, filtered);
     console.log(`🗑️ Order ${id} deleted`);
     res.json({ success: true });
-    
   } catch (error) {
     console.error('❌ Error deleting order:', error);
     res.status(500).json({ error: error.message });
@@ -723,22 +693,17 @@ app.delete('/api/orders/:id', (req, res) => {
 });
 
 // ============ PRODUCTS ============
-
-// Get all products
 app.get('/api/products', (req, res) => {
   const products = readData(PRODUCTS_FILE);
   res.json(products);
 });
 
 // ============ REVIEWS ============
-
-// Get reviews
 app.get('/api/reviews', (req, res) => {
   const reviews = readData(REVIEWS_FILE);
   res.json(reviews);
 });
 
-// Create review
 app.post('/api/reviews', (req, res) => {
   try {
     const reviews = readData(REVIEWS_FILE);
@@ -829,7 +794,6 @@ app.patch('/api/gateways/:id/toggle', (req, res) => {
 // ============ SSE ENDPOINT ============
 app.get('/api/orders/stream/public', (req, res) => {
   console.log('🔌 SSE client connected');
-  
   res.writeHead(200, {
     'Content-Type': 'text/event-stream',
     'Cache-Control': 'no-cache, no-transform',
@@ -837,20 +801,15 @@ app.get('/api/orders/stream/public', (req, res) => {
     'Access-Control-Allow-Origin': '*',
     'X-Accel-Buffering': 'no'
   });
-
   const clientId = Date.now();
-
   res.write(`event: connected\ndata: ${JSON.stringify({ status: 'connected', clientId })}\n\n`);
-
   const interval = setInterval(() => {
     res.write(`: ping\n\n`);
   }, 15000);
-
   req.on('close', () => {
     console.log(`🔌 SSE client ${clientId} disconnected`);
     clearInterval(interval);
   });
-
   req.on('error', (err) => {
     console.log(`⚠️ SSE client ${clientId} error:`, err.message);
     clearInterval(interval);
