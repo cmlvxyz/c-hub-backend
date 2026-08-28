@@ -121,176 +121,10 @@ const INITIAL_PRODUCTS = [
   },
   
   // ============ MEN'S HOODIES ============
-  {
-    "id": "clothes-men-hoodie-Beige-XL",
-    "sku": "CHUB-HD-001",
-    "name": "Cozy Hoodie - Beige",
-    "price": 2499,
-    "stock": 40,
-    "image": "/images/clothes/men/hoodie/beige.png",
-    "sizes": ["S", "M", "L", "XL"],
-    "colors": ["Beige"],
-    "category": "Apparel",
-    "subCategory": "Hoodies & Sweats",
-    "costPrice": 1200,
-    "brand": "C-HUB Originals"
-  },
-  {
-    "id": "clothes-men-hoodie-Mauve-XL",
-    "sku": "CHUB-HD-002",
-    "name": "Cozy Hoodie - Mauve",
-    "price": 2499,
-    "stock": 35,
-    "image": "/images/clothes/men/hoodie/mauve.png",
-    "sizes": ["S", "M", "L", "XL"],
-    "colors": ["Mauve"],
-    "category": "Apparel",
-    "subCategory": "Hoodies & Sweats",
-    "costPrice": 1200,
-    "brand": "C-HUB Originals"
-  },
-  {
-    "id": "clothes-men-hoodie-Pink-XL",
-    "sku": "CHUB-HD-003",
-    "name": "Cozy Hoodie - Pink",
-    "price": 2499,
-    "stock": 30,
-    "image": "/images/clothes/men/hoodie/pink.png",
-    "sizes": ["S", "M", "L", "XL"],
-    "colors": ["Pink"],
-    "category": "Apparel",
-    "subCategory": "Hoodies & Sweats",
-    "costPrice": 1200,
-    "brand": "C-HUB Originals"
-  },
-  {
-    "id": "clothes-men-hoodie-Sage-XL",
-    "sku": "CHUB-HD-004",
-    "name": "Cozy Hoodie - Sage",
-    "price": 2499,
-    "stock": 25,
-    "image": "/images/clothes/men/hoodie/sage.png",
-    "sizes": ["S", "M", "L", "XL"],
-    "colors": ["Sage"],
-    "category": "Apparel",
-    "subCategory": "Hoodies & Sweats",
-    "costPrice": 1200,
-    "brand": "C-HUB Originals"
-  },
-  {
-    "id": "clothes-men-hoodie-Burgundy-XL",
-    "sku": "CHUB-HD-005",
-    "name": "Cozy Hoodie - Burgundy",
-    "price": 2499,
-    "stock": 20,
-    "image": "/images/clothes/men/hoodie/burgundy.png",
-    "sizes": ["S", "M", "L", "XL"],
-    "colors": ["Burgundy"],
-    "category": "Apparel",
-    "subCategory": "Hoodies & Sweats",
-    "costPrice": 1200,
-    "brand": "C-HUB Originals"
-  },
-  {
-    "id": "clothes-men-hoodie-Brown-XL",
-    "sku": "CHUB-HD-006",
-    "name": "Cozy Hoodie - Brown",
-    "price": 2499,
-    "stock": 15,
-    "image": "/images/clothes/men/hoodie/brown.png",
-    "sizes": ["S", "M", "L", "XL"],
-    "colors": ["Brown"],
-    "category": "Apparel",
-    "subCategory": "Hoodies & Sweats",
-    "costPrice": 1200,
-    "brand": "C-HUB Originals"
-  },
+  // Wala pang images - skip muna
   
   // ============ MEN'S SWEATSHIRTS ============
-  {
-    "id": "clothes-men-sweatshirt-White-XL",
-    "sku": "CHUB-SW-001",
-    "name": "Classic Sweatshirt - White",
-    "price": 2199,
-    "stock": 40,
-    "image": "/images/clothes/men/sweatshirts/white1.png",
-    "sizes": ["S", "M", "L", "XL"],
-    "colors": ["White"],
-    "category": "Apparel",
-    "subCategory": "Sweatshirts",
-    "costPrice": 1000,
-    "brand": "C-HUB Originals"
-  },
-  {
-    "id": "clothes-men-sweatshirt-Gray-XL",
-    "sku": "CHUB-SW-002",
-    "name": "Classic Sweatshirt - Gray",
-    "price": 2199,
-    "stock": 35,
-    "image": "/images/clothes/men/sweatshirts/gray1.png",
-    "sizes": ["S", "M", "L", "XL"],
-    "colors": ["Gray"],
-    "category": "Apparel",
-    "subCategory": "Sweatshirts",
-    "costPrice": 1000,
-    "brand": "C-HUB Originals"
-  },
-  {
-    "id": "clothes-men-sweatshirt-Blue-XL",
-    "sku": "CHUB-SW-003",
-    "name": "Classic Sweatshirt - Blue",
-    "price": 2199,
-    "stock": 30,
-    "image": "/images/clothes/men/sweatshirts/blue1.png",
-    "sizes": ["S", "M", "L", "XL"],
-    "colors": ["Blue"],
-    "category": "Apparel",
-    "subCategory": "Sweatshirts",
-    "costPrice": 1000,
-    "brand": "C-HUB Originals"
-  },
-  {
-    "id": "clothes-men-sweatshirt-Brown-XL",
-    "sku": "CHUB-SW-004",
-    "name": "Classic Sweatshirt - Brown",
-    "price": 2199,
-    "stock": 25,
-    "image": "/images/clothes/men/sweatshirts/brown2.png",
-    "sizes": ["S", "M", "L", "XL"],
-    "colors": ["Brown"],
-    "category": "Apparel",
-    "subCategory": "Sweatshirts",
-    "costPrice": 1000,
-    "brand": "C-HUB Originals"
-  },
-  {
-    "id": "clothes-men-sweatshirt-Pink-XL",
-    "sku": "CHUB-SW-005",
-    "name": "Classic Sweatshirt - Pink",
-    "price": 2199,
-    "stock": 20,
-    "image": "/images/clothes/men/sweatshirts/pink1.png",
-    "sizes": ["S", "M", "L", "XL"],
-    "colors": ["Pink"],
-    "category": "Apparel",
-    "subCategory": "Sweatshirts",
-    "costPrice": 1000,
-    "brand": "C-HUB Originals"
-  },
-  {
-    "id": "clothes-men-sweatshirt-Beige-XL",
-    "sku": "CHUB-SW-006",
-    "name": "Classic Sweatshirt - Beige",
-    "price": 2199,
-    "stock": 15,
-    "image": "/images/clothes/men/sweatshirts/beige1.png",
-    "sizes": ["S", "M", "L", "XL"],
-    "colors": ["Beige"],
-    "category": "Apparel",
-    "subCategory": "Sweatshirts",
-    "costPrice": 1000,
-    "brand": "C-HUB Originals"
-  },
+  // Wala pang images - skip muna
 
   // ============ WOMEN'S TOPS ============
   {
@@ -464,58 +298,14 @@ const INITIAL_PRODUCTS = [
     "brand": "C-HUB Originals"
   },
 
-  // ============ MEN'S SHOES ============
-  {
-    "id": "shoes-men-sneakers-Chalk White-7",
-    "sku": "CHUB-SNK-001",
-    "name": "Urban Sneakers - Chalk White",
-    "price": 2499,
-    "stock": 40,
-    "image": "/images/clothes/men/shoes/shoes1.png",
-    "sizes": ["7", "8", "9", "10", "11"],
-    "colors": ["Chalk White"],
-    "category": "Footwear",
-    "subCategory": "Sneakers",
-    "costPrice": 1200,
-    "brand": "C-HUB Kicks"
-  },
-  {
-    "id": "shoes-men-sneakers-Stealth Charcoal-7",
-    "sku": "CHUB-SNK-002",
-    "name": "Urban Sneakers - Stealth Charcoal",
-    "price": 2499,
-    "stock": 35,
-    "image": "/images/clothes/men/shoes/shoes2.png",
-    "sizes": ["7", "8", "9", "10", "11"],
-    "colors": ["Stealth Charcoal"],
-    "category": "Footwear",
-    "subCategory": "Sneakers",
-    "costPrice": 1200,
-    "brand": "C-HUB Kicks"
-  },
-  {
-    "id": "shoes-men-sneakers-Deep Navy-7",
-    "sku": "CHUB-SNK-003",
-    "name": "Urban Sneakers - Deep Navy",
-    "price": 2499,
-    "stock": 30,
-    "image": "/images/clothes/men/shoes/shoes3.png",
-    "sizes": ["7", "8", "9", "10", "11"],
-    "colors": ["Deep Navy"],
-    "category": "Footwear",
-    "subCategory": "Sneakers",
-    "costPrice": 1200,
-    "brand": "C-HUB Kicks"
-  },
-
-  // ============ PANTS ============
+  // ============ PANTS - MEN ============
   {
     "id": "clothes-men-pants-Light Stone-28",
     "sku": "CHUB-PANTS-001",
     "name": "Classic Denim Jeans - Light Stone",
     "price": 1799,
     "stock": 40,
-    "image": "/images/clothes/men/pants/pants1.png",
+    "image": "/images/pants/men/pants/pants1.png",
     "sizes": ["28", "30", "32", "34", "36"],
     "colors": ["Light Stone"],
     "category": "Apparel",
@@ -523,50 +313,85 @@ const INITIAL_PRODUCTS = [
     "costPrice": 900,
     "brand": "C-HUB Street"
   },
-  
+  {
+    "id": "clothes-men-pants-Mid Gray-28",
+    "sku": "CHUB-PANTS-002",
+    "name": "Classic Denim Jeans - Mid Gray",
+    "price": 1799,
+    "stock": 35,
+    "image": "/images/pants/men/pants/pants2.png",
+    "sizes": ["28", "30", "32", "34", "36"],
+    "colors": ["Mid Gray"],
+    "category": "Apparel",
+    "subCategory": "Jeans",
+    "costPrice": 900,
+    "brand": "C-HUB Street"
+  },
+  {
+    "id": "clothes-men-pants-Off White-28",
+    "sku": "CHUB-PANTS-003",
+    "name": "Classic Denim Jeans - Off White",
+    "price": 1799,
+    "stock": 30,
+    "image": "/images/pants/men/pants/pants3.png",
+    "sizes": ["28", "30", "32", "34", "36"],
+    "colors": ["Off White"],
+    "category": "Apparel",
+    "subCategory": "Jeans",
+    "costPrice": 900,
+    "brand": "C-HUB Street"
+  },
+  {
+    "id": "clothes-men-pants-Silver Sand-28",
+    "sku": "CHUB-PANTS-004",
+    "name": "Classic Denim Jeans - Silver Sand",
+    "price": 1799,
+    "stock": 25,
+    "image": "/images/pants/men/pants/pants4.png",
+    "sizes": ["28", "30", "32", "34", "36"],
+    "colors": ["Silver Sand"],
+    "category": "Apparel",
+    "subCategory": "Jeans",
+    "costPrice": 900,
+    "brand": "C-HUB Street"
+  },
+  {
+    "id": "clothes-men-pants-Deep Indigo Navy-28",
+    "sku": "CHUB-PANTS-005",
+    "name": "Classic Denim Jeans - Deep Indigo Navy",
+    "price": 1799,
+    "stock": 20,
+    "image": "/images/pants/men/pants/pants5.png",
+    "sizes": ["28", "30", "32", "34", "36"],
+    "colors": ["Deep Indigo Navy"],
+    "category": "Apparel",
+    "subCategory": "Jeans",
+    "costPrice": 900,
+    "brand": "C-HUB Street"
+  },
+  {
+    "id": "clothes-men-pants-Rustic Brown-28",
+    "sku": "CHUB-PANTS-006",
+    "name": "Classic Denim Jeans - Rustic Brown",
+    "price": 1799,
+    "stock": 15,
+    "image": "/images/pants/men/pants/pants6.png",
+    "sizes": ["28", "30", "32", "34", "36"],
+    "colors": ["Rustic Brown"],
+    "category": "Apparel",
+    "subCategory": "Jeans",
+    "costPrice": 900,
+    "brand": "C-HUB Street"
+  },
+
+  // ============ PANTS - WOMEN ============
+  // Wala pang images sa products.ts - skip muna
+
+  // ============ MEN'S SHOES ============
+  // Wala pang images sa products.ts - skip muna
+
   // ============ ACCESSORIES ============
-  {
-    "id": "clothes-men-accessories-Black-OS",
-    "sku": "CHUB-BAG-001",
-    "name": "Everyday Crossbody Bag - Stone",
-    "price": 1499,
-    "stock": 50,
-    "image": "/images/clothes/men/accessories/black.png",
-    "sizes": ["OS", "S", "M", "L"],
-    "colors": ["Stone"],
-    "category": "Accessories",
-    "subCategory": "Bags",
-    "costPrice": 700,
-    "brand": "C-HUB Gear"
-  },
-  {
-    "id": "clothes-men-accessories-White-OS",
-    "sku": "CHUB-CAP-001",
-    "name": "Classic Street Cap - White",
-    "price": 799,
-    "stock": 60,
-    "image": "/images/clothes/men/accessories/white.png",
-    "sizes": ["OS", "S", "M", "L"],
-    "colors": ["White"],
-    "category": "Accessories",
-    "subCategory": "Hats",
-    "costPrice": 350,
-    "brand": "C-HUB Gear"
-  },
-  {
-    "id": "clothes-men-accessories-White-S",
-    "sku": "CHUB-SOCK-001",
-    "name": "Cushioned Crew Socks - White",
-    "price": 399,
-    "stock": 100,
-    "image": "/images/clothes/men/accessories/white.png",
-    "sizes": ["S", "M", "L"],
-    "colors": ["White"],
-    "category": "Accessories",
-    "subCategory": "Socks",
-    "costPrice": 150,
-    "brand": "C-HUB Gear"
-  }
+  // Wala pang images sa products.ts - skip muna
 ];
 
 // Initialize data
