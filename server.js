@@ -12,6 +12,7 @@ const __dirname = path.dirname(__filename);
 const app = express();
 const PORT = process.env.PORT || 3013;
 
+// ✅ CORS
 app.use(cors({
   origin: '*',
   methods: ['GET', 'POST', 'PATCH', 'DELETE', 'OPTIONS'],
@@ -19,10 +20,10 @@ app.use(cors({
 }));
 app.use(express.json());
 
-// ✅ SERVE STATIC FILES (IMAGES)
+// ✅ Serve static images
 app.use('/images', express.static(path.join(__dirname, 'public/images')));
 
-// Data folder
+// ============ DATA DIRECTORY ============
 const DATA_DIR = path.join(__dirname, 'data');
 if (!fs.existsSync(DATA_DIR)) {
   fs.mkdirSync(DATA_DIR, { recursive: true });
@@ -31,7 +32,6 @@ if (!fs.existsSync(DATA_DIR)) {
 const ORDERS_FILE = path.join(DATA_DIR, 'orders.json');
 const PRODUCTS_FILE = path.join(DATA_DIR, 'products.json');
 const REVIEWS_FILE = path.join(DATA_DIR, 'reviews.json');
-const PURCHASE_ORDERS_FILE = path.join(DATA_DIR, 'purchase_orders.json');
 
 const INITIAL_PRODUCTS = [
   // ============ MEN'S T-SHIRTS ============
@@ -560,34 +560,23 @@ const INITIAL_PRODUCTS = [
   // Wala pang images sa products.ts - skip muna
 ];
 
-// Initialize data
-const initializeData = () => {
-  if (!fs.existsSync(ORDERS_FILE)) {
-    fs.writeFileSync(ORDERS_FILE, JSON.stringify([]));
-  }
-  if (!fs.existsSync(PRODUCTS_FILE)) {
-    fs.writeFileSync(PRODUCTS_FILE, JSON.stringify(INITIAL_PRODUCTS, null, 2));
-  }
-  if (!fs.existsSync(REVIEWS_FILE)) {
-    fs.writeFileSync(REVIEWS_FILE, JSON.stringify([]));
-  }
-  if (!fs.existsSync(PURCHASE_ORDERS_FILE)) {
-    fs.writeFileSync(PURCHASE_ORDERS_FILE, JSON.stringify([]));
-  }
-};
+// ============ INITIALIZE FILES ============
+if (!fs.existsSync(ORDERS_FILE)) {
+  fs.writeFileSync(ORDERS_FILE, JSON.stringify([]));
+}
+if (!fs.existsSync(PRODUCTS_FILE)) {
+  fs.writeFileSync(PRODUCTS_FILE, JSON.stringify([]));
+}
+if (!fs.existsSync(REVIEWS_FILE)) {
+  fs.writeFileSync(REVIEWS_FILE, JSON.stringify([]));
+}
 
-initializeData();
-
-// ============ READ/WRITE DATA ============
+// ============ READ/WRITE FUNCTIONS ============
 const readData = (file) => {
   try {
     if (fs.existsSync(file)) {
       const content = fs.readFileSync(file, 'utf8');
-      if (!content || content.trim() === '') {
-        return [];
-      }
-      const parsed = JSON.parse(content);
-      return Array.isArray(parsed) ? parsed : [];
+      return JSON.parse(content) || [];
     }
     return [];
   } catch (error) {
@@ -606,210 +595,61 @@ const writeData = (file, data) => {
   }
 };
 
-// ============ PRODUCT IMAGE ENRICHMENT - FIXED ============
-const enrichOrderItemsWithImages = (order) => {
-  if (!order || !order.items || order.items.length === 0) {
-    return order;
-  }
-  
+// ============ HEALTH CHECK ============
+app.get('/api/health', (req, res) => {
+  const orders = readData(ORDERS_FILE);
   const products = readData(PRODUCTS_FILE);
-  const BASE_URL = 'https://c-hub-admin.vercel.app';
-  
-  console.log(`🔍 Enriching ${order.items.length} items for order ${order.orderId}`);
-  
-  const enrichedItems = order.items.map(item => {
-    console.log(`  - Looking for product: "${item.name}"`);
-    
-    let product = null;
-    
-    // ✅ 1. Hanapin gamit ang exact name
-    if (item.name) {
-      product = products.find(p => p.name === item.name);
-      if (product) console.log(`    ✅ Found by exact name: ${product.name}`);
-    }
-    
-    // ✅ 2. Hanapin gamit ang base name (without size/color)
-    if (!product && item.name) {
-      const itemBaseName = item.name.split(' - ')[0];
-      product = products.find(p => {
-        const productBaseName = p.name.split(' - ')[0];
-        return productBaseName === itemBaseName;
-      });
-      if (product) console.log(`    ✅ Found by base name: ${product.name}`);
-    }
-    
-    // ✅ 3. Hanapin gamit ang partial match (last resort)
-    if (!product && item.name) {
-      const itemNameLower = item.name.toLowerCase();
-      // I-sort para ma-prioritize ang mas specific na match
-      const matches = products.filter(p => 
-        p.name.toLowerCase().includes(itemNameLower) || 
-        itemNameLower.includes(p.name.toLowerCase())
-      );
-      // Kunin ang pinaka-specific na match (pinakamahabang name)
-      if (matches.length > 0) {
-        product = matches.reduce((a, b) => a.name.length > b.name.length ? a : b);
-        console.log(`    ✅ Found by partial match: ${product.name}`);
-      }
-    }
-    
-    // ✅ KUNG MAY PRODUCT, GAMITIN ANG IMAGE
-    if (product && product.image) {
-      let imageUrl = product.image;
-      if (imageUrl.startsWith('/')) {
-        imageUrl = `${BASE_URL}${imageUrl}`;
-      }
-      console.log(`    ✅ Image URL: ${imageUrl}`);
-      return { ...item, image: imageUrl };
-    }
-    
-    // ✅ FALLBACK: Default image
-    let fallbackImage = 'https://images.unsplash.com/photo-1521572267360-ee0c2909d518?w=500&auto=format&fit=crop&q=80';
-    console.log(`    📷 Using fallback for "${item.name}"`);
-    return { ...item, image: fallbackImage };
+  res.json({ 
+    status: 'healthy', 
+    timestamp: new Date().toISOString(),
+    orders: orders.length,
+    products: products.length
   });
-  
-  order.items = enrichedItems;
-  return order;
-};
+});
 
-// ============ SSE CLIENTS ============
-let sseClients = [];
-
-function broadcastSSE(event, data) {
-  const payload = `event: ${event}\ndata: ${JSON.stringify(data)}\n\n`;
-  console.log(`📡 Broadcasting SSE: ${event} to ${sseClients.length} clients`);
-  sseClients.forEach(client => {
-    try {
-      client.res.write(payload);
-    } catch (err) {
-      console.log('⚠️ Failed to send SSE to client');
-    }
+// ============ DEBUG ============
+app.get('/api/debug/products', (req, res) => {
+  const products = readData(PRODUCTS_FILE);
+  res.json({
+    total: products.length,
+    products: products.map(p => ({ 
+      id: p.id, 
+      name: p.name, 
+      image: p.image 
+    }))
   });
-}
+});
 
-// ============ API ROUTES ============
+// ============ ORDERS ============
 
-// ✅ SYNC ORDERS FROM STORE - UPDATED: Hindi na bumabalik ang deleted orders
+// Get all orders
+app.get('/api/orders', (req, res) => {
+  const orders = readData(ORDERS_FILE);
+  res.json(orders);
+});
+
+// Sync orders from store
 app.post('/api/orders/sync', (req, res) => {
   try {
-    const { orders: clientOrders } = req.body;
-    
-    if (!Array.isArray(clientOrders)) {
+    const { orders } = req.body;
+    if (!Array.isArray(orders)) {
       return res.status(400).json({ error: 'Invalid orders data' });
     }
     
-    console.log(`🔄 Syncing ${clientOrders.length} orders from client...`);
-    console.log('📦 First order items:', JSON.stringify(clientOrders[0]?.items || [], null, 2));
+    console.log(`🔄 Syncing ${orders.length} orders...`);
+    writeData(ORDERS_FILE, orders);
     
-    // I-enrich ang bawat order ng product images
-    const enrichedOrders = clientOrders.map(order => enrichOrderItemsWithImages(order));
-    
-    // I-load ang existing orders at i-filter ang mga deleted
-    let existingOrders = readData(ORDERS_FILE);
-    if (!Array.isArray(existingOrders)) {
-      existingOrders = [];
-    }
-    
-    // ✅ FILTER OUT DELETED ORDERS - HINDI NA BABALIK
-    const activeOrders = existingOrders.filter(o => 
-      o.status !== 'Deleted' && 
-      o.status !== 'deleted' &&
-      !o._deleted
-    );
-    
-    // I-merge ang orders
-    const existingIds = new Set(activeOrders.map(o => o.orderId));
-    
-    enrichedOrders.forEach(clientOrder => {
-      if (!existingIds.has(clientOrder.orderId)) {
-        activeOrders.push(clientOrder);
-        existingIds.add(clientOrder.orderId);
-      } else {
-        const index = activeOrders.findIndex(o => o.orderId === clientOrder.orderId);
-        if (index !== -1) {
-          activeOrders[index] = { ...activeOrders[index], ...clientOrder };
-        }
-      }
-    });
-    
-    writeData(ORDERS_FILE, activeOrders);
-    broadcastSSE('order_sync', { count: activeOrders.length });
-    
-    console.log(`✅ Synced ${activeOrders.length} total orders (deleted orders removed)`);
-    res.json({ success: true, count: activeOrders.length });
-    
+    res.json({ success: true, count: orders.length });
   } catch (error) {
-    console.error('❌ Failed to sync orders:', error);
+    console.error('❌ Sync failed:', error);
     res.status(500).json({ error: error.message });
   }
 });
 
-// Get all orders - WITH IMAGE ENRICHMENT
-app.get('/api/orders', (req, res) => {
-  let orders = readData(ORDERS_FILE);
-  if (!Array.isArray(orders)) {
-    orders = [];
-  }
-  
-  // ✅ FILTER OUT DELETED ORDERS
-  const activeOrders = orders.filter(o => 
-    o.status !== 'Deleted' && 
-    o.status !== 'deleted' &&
-    !o._deleted
-  );
-  
-  console.log(`📦 Loading ${activeOrders.length} active orders...`);
-  
-  // I-enrich ang bawat order ng product images
-  const enrichedOrders = activeOrders.map(order => enrichOrderItemsWithImages(order));
-  
-  res.json(enrichedOrders);
-});
-
-// Get single order - WITH IMAGE ENRICHMENT
-app.get('/api/orders/:id', (req, res) => {
-  let orders = readData(ORDERS_FILE);
-  if (!Array.isArray(orders)) {
-    orders = [];
-  }
-  
-  // ✅ FILTER OUT DELETED ORDERS
-  const activeOrders = orders.filter(o => 
-    o.status !== 'Deleted' && 
-    o.status !== 'deleted' &&
-    !o._deleted
-  );
-  
-  const order = activeOrders.find(o => o.orderId === req.params.id);
-  
-  if (order) {
-    const enrichedOrder = enrichOrderItemsWithImages(order);
-    res.json(enrichedOrder);
-  } else {
-    res.status(404).json({ error: 'Order not found' });
-  }
-});
-
-// Create order - WITH IMAGE ENRICHMENT
+// Create order
 app.post('/api/orders', (req, res) => {
   try {
-    console.log('📦 Received order request');
-    
-    let orders = readData(ORDERS_FILE);
-    if (!Array.isArray(orders)) {
-      orders = [];
-    }
-    
-    // ✅ FILTER OUT DELETED ORDERS
-    const activeOrders = orders.filter(o => 
-      o.status !== 'Deleted' && 
-      o.status !== 'deleted' &&
-      !o._deleted
-    );
-    
-    const products = readData(PRODUCTS_FILE);
-    const BASE_URL = 'https://c-hub-admin.vercel.app';
+    const orders = readData(ORDERS_FILE);
     
     const newOrder = {
       ...req.body,
@@ -823,120 +663,37 @@ app.post('/api/orders', (req, res) => {
       status: req.body.status || 'To Ship'
     };
 
-    // I-enrich ang items ng product images
-    newOrder.items = newOrder.items.map(item => {
-      let product = products.find(p => p.id === item.productId);
-      if (!product && item.id) {
-        product = products.find(p => p.id === item.id);
-      }
-      if (!product && item.sku) {
-        product = products.find(p => p.sku === item.sku);
-      }
-      if (!product && item.name) {
-        product = products.find(p => p.name === item.name);
-      }
-      // ✅ UPDATED: Gumamit ng base name instead of includes()
-      if (!product && item.name) {
-        const itemBaseName = item.name.split(' - ')[0];
-        product = products.find(p => {
-          const productBaseName = p.name.split(' - ')[0];
-          return productBaseName === itemBaseName;
-        });
-      }
-      
-      let imageUrl = null;
-      // ✅ I-CONVERT LAHAT NG IMAGES SA TAMANG FULL URL
-      if (product && product.image) {
-        let fullImageUrl = product.image;
-        
-        // Kung may leading slash (/), lagyan ng backend URL
-        if (fullImageUrl.startsWith('/')) {
-          fullImageUrl = `${BASE_URL}${fullImageUrl}`;
-        }
-        // Kung wala pang http, lagyan ng buong URL
-        else if (!fullImageUrl.startsWith('http') && !fullImageUrl.startsWith('https')) {
-          fullImageUrl = `${BASE_URL}/${fullImageUrl}`;
-        }
-        
-        imageUrl = fullImageUrl;
-      } else {
-        // Fallback para sa generic na item
-        imageUrl = 'https://images.unsplash.com/photo-1521572267360-ee0c2909d518?w=500&auto=format&fit=crop&q=80';
-      }
-      
-      return { ...item, image: imageUrl };
-    });
+    orders.unshift(newOrder);
+    writeData(ORDERS_FILE, orders);
 
-    // Decrement inventory
-    if (newOrder.items && newOrder.items.length > 0) {
-      newOrder.items.forEach(item => {
-        const prod = products.find(p => p.id === item.productId || p.id === item.id);
-        if (prod) {
-          prod.stock = Math.max(0, prod.stock - (item.qty || 1));
-        }
-      });
-      writeData(PRODUCTS_FILE, products);
-    }
-
-    activeOrders.unshift(newOrder);
-    writeData(ORDERS_FILE, activeOrders);
-
-    broadcastSSE('new_order', newOrder);
-    broadcastSSE('inventory_sync', products);
-
-    console.log('✅ Order saved:', newOrder.orderId);
+    console.log(`✅ Order saved: ${newOrder.orderId}`);
     res.status(201).json({ success: true, order: newOrder });
     
   } catch (error) {
     console.error('❌ Error creating order:', error);
-    res.status(500).json({ 
-      success: false, 
-      error: error.message || 'Failed to create order' 
-    });
+    res.status(500).json({ error: error.message });
   }
 });
 
-// UPDATE ORDER STATUS
+// Update order
 app.patch('/api/orders/:id', (req, res) => {
   try {
     const { id } = req.params;
-    let orders = readData(ORDERS_FILE);
-    if (!Array.isArray(orders)) {
-      orders = [];
-    }
-    
-    // ✅ FILTER OUT DELETED ORDERS
-    const activeOrders = orders.filter(o => 
-      o.status !== 'Deleted' && 
-      o.status !== 'deleted' &&
-      !o._deleted
-    );
-    
-    const index = activeOrders.findIndex(o => o.orderId === id);
+    const orders = readData(ORDERS_FILE);
+    const index = orders.findIndex(o => o.orderId === id);
     
     if (index === -1) {
       return res.status(404).json({ error: 'Order not found' });
     }
 
-    const updatedOrder = {
-      ...activeOrders[index],
+    orders[index] = {
+      ...orders[index],
       ...req.body,
       updatedAt: new Date().toISOString()
     };
-    
-    const enrichedOrder = enrichOrderItemsWithImages(updatedOrder);
-    
-    activeOrders[index] = enrichedOrder;
-    writeData(ORDERS_FILE, activeOrders);
-    
-    broadcastSSE('order_update', { 
-      orderId: id, 
-      status: enrichedOrder.status, 
-      order: enrichedOrder 
-    });
-    
-    console.log(`📦 Order ${id} updated to ${enrichedOrder.status}`);
-    res.json({ success: true, order: enrichedOrder });
+
+    writeData(ORDERS_FILE, orders);
+    res.json({ success: true, order: orders[index] });
     
   } catch (error) {
     console.error('❌ Error updating order:', error);
@@ -944,31 +701,20 @@ app.patch('/api/orders/:id', (req, res) => {
   }
 });
 
-// ✅ DELETE ORDER - PERMANENT DELETE
+// Delete order
 app.delete('/api/orders/:id', (req, res) => {
   try {
     const { id } = req.params;
-    let orders = readData(ORDERS_FILE);
-    if (!Array.isArray(orders)) {
-      orders = [];
-    }
+    const orders = readData(ORDERS_FILE);
+    const filtered = orders.filter(o => o.orderId !== id);
     
-    // ✅ FIND THE ORDER TO DELETE
-    const orderIndex = orders.findIndex(o => o.orderId === id);
-    
-    if (orderIndex === -1) {
+    if (filtered.length === orders.length) {
       return res.status(404).json({ error: 'Order not found' });
     }
 
-    // ✅ PERMANENTLY DELETE THE ORDER
-    const deletedOrder = orders[orderIndex];
-    orders.splice(orderIndex, 1);
-    writeData(ORDERS_FILE, orders);
-    
-    broadcastSSE('order_deleted', { orderId: id });
-    
-    console.log(`🗑️ Order ${id} permanently deleted`);
-    res.json({ success: true, order: deletedOrder });
+    writeData(ORDERS_FILE, filtered);
+    console.log(`🗑️ Order ${id} deleted`);
+    res.json({ success: true });
     
   } catch (error) {
     console.error('❌ Error deleting order:', error);
@@ -977,65 +723,22 @@ app.delete('/api/orders/:id', (req, res) => {
 });
 
 // ============ PRODUCTS ============
-// Get products
+
+// Get all products
 app.get('/api/products', (req, res) => {
   const products = readData(PRODUCTS_FILE);
   res.json(products);
 });
 
-// Update product
-app.patch('/api/products/:id', (req, res) => {
-  try {
-    const { id } = req.params;
-    const products = readData(PRODUCTS_FILE);
-    const index = products.findIndex(p => p.id === id || p.sku === id);
-    
-    if (index === -1) {
-      return res.status(404).json({ error: 'Product not found' });
-    }
-
-    products[index] = {
-      ...products[index],
-      ...req.body,
-      updatedAt: new Date().toISOString()
-    };
-
-    writeData(PRODUCTS_FILE, products);
-    broadcastSSE('inventory_sync', products[index]);
-    res.json({ success: true, product: products[index] });
-    
-  } catch (error) {
-    console.error('❌ Error updating product:', error);
-    res.status(500).json({ error: error.message });
-  }
-});
-
-// Delete product
-app.delete('/api/products/:id', (req, res) => {
-  try {
-    const { id } = req.params;
-    const products = readData(PRODUCTS_FILE);
-    const filtered = products.filter(p => p.id !== id);
-    
-    if (filtered.length === products.length) {
-      return res.status(404).json({ error: 'Product not found' });
-    }
-
-    writeData(PRODUCTS_FILE, filtered);
-    res.json({ success: true });
-    
-  } catch (error) {
-    console.error('❌ Error deleting product:', error);
-    res.status(500).json({ error: error.message });
-  }
-});
-
 // ============ REVIEWS ============
+
+// Get reviews
 app.get('/api/reviews', (req, res) => {
   const reviews = readData(REVIEWS_FILE);
   res.json(reviews);
 });
 
+// Create review
 app.post('/api/reviews', (req, res) => {
   try {
     const reviews = readData(REVIEWS_FILE);
@@ -1048,29 +751,6 @@ app.post('/api/reviews', (req, res) => {
     reviews.unshift(newReview);
     writeData(REVIEWS_FILE, reviews);
     res.status(201).json({ success: true, review: newReview });
-  } catch (error) {
-    res.status(500).json({ error: error.message });
-  }
-});
-
-app.post('/api/reviews/:id/reply', (req, res) => {
-  try {
-    const { id } = req.params;
-    const reviews = readData(REVIEWS_FILE);
-    const index = reviews.findIndex(r => r.id === id);
-    
-    if (index === -1) {
-      return res.status(404).json({ error: 'Review not found' });
-    }
-
-    reviews[index].adminReply = {
-      comment: req.body.comment,
-      date: new Date().toISOString()
-    };
-
-    writeData(REVIEWS_FILE, reviews);
-    res.json({ success: true, review: reviews[index] });
-    
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
@@ -1146,44 +826,6 @@ app.patch('/api/gateways/:id/toggle', (req, res) => {
   res.json({ success: true, gateway });
 });
 
-// ============ ANALYTICS ============
-app.get('/api/analytics', (req, res) => {
-  const orders = readData(ORDERS_FILE);
-  const products = readData(PRODUCTS_FILE);
-  
-  // ✅ FILTER OUT DELETED ORDERS
-  const activeOrders = orders.filter(o => 
-    o.status !== 'Deleted' && 
-    o.status !== 'deleted' &&
-    !o._deleted
-  );
-  
-  const validOrders = activeOrders.filter(o => o.status !== 'Cancelled' && o.status !== 'Refunded');
-  const totalRevenue = validOrders.reduce((sum, o) => sum + (o.total || 0), 0);
-  const totalCost = validOrders.reduce((sum, o) => sum + (o.costTotal || 0), 0);
-  const grossProfit = totalRevenue - totalCost;
-  const grossMarginPct = totalRevenue > 0 ? Math.round((grossProfit / totalRevenue) * 100) : 0;
-  const aov = validOrders.length > 0 ? Math.round(totalRevenue / validOrders.length) : 0;
-  
-  res.json({
-    totalRevenue,
-    grossProfit,
-    grossMarginPct,
-    aov,
-    totalOrders: activeOrders.length,
-    completedOrders: activeOrders.filter(o => o.status === 'Completed').length,
-    activeOrders: activeOrders.filter(o => ['To Ship', 'Shipped', 'Out for Delivery'].includes(o.status)).length,
-    toPayOrders: activeOrders.filter(o => o.status === 'To Pay').length,
-    channelData: { 'Online Store': totalRevenue * 0.6 },
-    gatewayData: { 'GCash': 5, 'Maya': 3, 'COD': 2 },
-    inventoryValuation: products.reduce((sum, p) => sum + (p.stock || 0) * (p.costPrice || 500), 0),
-    retailValuation: products.reduce((sum, p) => sum + (p.stock || 0) * (p.price || 0), 0),
-    totalUnitsInStock: products.reduce((sum, p) => sum + (p.stock || 0), 0),
-    lowStockCount: products.filter(p => (p.stock || 0) <= 10 && (p.stock || 0) > 0).length,
-    outOfStockCount: products.filter(p => (p.stock || 0) === 0).length
-  });
-});
-
 // ============ SSE ENDPOINT ============
 app.get('/api/orders/stream/public', (req, res) => {
   console.log('🔌 SSE client connected');
@@ -1197,19 +839,8 @@ app.get('/api/orders/stream/public', (req, res) => {
   });
 
   const clientId = Date.now();
-  const client = { id: clientId, res };
-  sseClients.push(client);
-  console.log(`📡 SSE client ${clientId} connected. Total clients: ${sseClients.length}`);
 
   res.write(`event: connected\ndata: ${JSON.stringify({ status: 'connected', clientId })}\n\n`);
-
-  const orders = readData(ORDERS_FILE);
-  const activeOrders = orders.filter(o => 
-    o.status !== 'Deleted' && 
-    o.status !== 'deleted' &&
-    !o._deleted
-  );
-  res.write(`event: orders_count\ndata: ${JSON.stringify({ count: activeOrders.length })}\n\n`);
 
   const interval = setInterval(() => {
     res.write(`: ping\n\n`);
@@ -1217,9 +848,7 @@ app.get('/api/orders/stream/public', (req, res) => {
 
   req.on('close', () => {
     console.log(`🔌 SSE client ${clientId} disconnected`);
-    sseClients = sseClients.filter(c => c.id !== clientId);
     clearInterval(interval);
-    console.log(`📡 Total clients: ${sseClients.length}`);
   });
 
   req.on('error', (err) => {
@@ -1228,57 +857,12 @@ app.get('/api/orders/stream/public', (req, res) => {
   });
 });
 
-// ============ DELETE ALL ORDERS ============
-app.delete('/api/orders/all', (req, res) => {
-  try {
-    writeData(ORDERS_FILE, []);
-    broadcastSSE('orders_cleared', {});
-    res.json({ success: true, message: 'All orders cleared' });
-  } catch (error) {
-    res.status(500).json({ error: error.message });
-  }
-});
-
-// ============ HEALTH CHECK ============
-app.get('/api/health', (req, res) => {
-  const orders = readData(ORDERS_FILE);
-  const products = readData(PRODUCTS_FILE);
-  
-  const activeOrders = orders.filter(o => 
-    o.status !== 'Deleted' && 
-    o.status !== 'deleted' &&
-    !o._deleted
-  );
-  
-  res.json({ 
-    status: 'healthy', 
-    timestamp: new Date().toISOString(),
-    orders: activeOrders.length,
-    products: products.length,
-    sseClients: sseClients.length
-  });
-});
-
-// ============ DEBUG ============
-// ✅ IDAGDAG MO ITO DITO - AFTER HEALTH CHECK, BEFORE START SERVER
-app.get('/api/debug/products', (req, res) => {
-  const products = readData(PRODUCTS_FILE);
-  const names = products.map(p => ({
-    name: p.name,
-    image: p.image
-  }));
-  res.json({
-    total: products.length,
-    products: names
-  });
-});
-
 // ============ START SERVER ============
 app.listen(PORT, '0.0.0.0', () => {
-  console.log(`✅ C-HUB Backend Server running on http://localhost:${PORT}`);
-  console.log(`   📁 Data stored in: ${DATA_DIR}`);
+  console.log(`✅ C-HUB Backend Server running on port ${PORT}`);
+  console.log(`   📁 Data folder: ${DATA_DIR}`);
   console.log(`   📦 Orders: ${readData(ORDERS_FILE).length}`);
   console.log(`   📦 Products: ${readData(PRODUCTS_FILE).length}`);
-  console.log(`   🔌 SSE: http://localhost:${PORT}/api/orders/stream/public`);
-  console.log(`   📡 Sync endpoint: POST /api/orders/sync`);
+  console.log(`   🔌 Health: http://localhost:${PORT}/api/health`);
+  console.log(`   📡 Sync: POST /api/orders/sync`);
 });
