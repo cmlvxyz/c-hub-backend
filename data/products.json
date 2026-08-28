@@ -1,0 +1,608 @@
+[
+  {
+    "id": "prod-001",
+    "sku": "CHUB-HD-001",
+    "name": "C-HUB Signature Heavyweight Hoodie",
+    "price": 2499,
+    "stock": 45,
+    "image": "/images/clothes/men/hoodie/beige.png",
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL"
+    ],
+    "colors": [
+      "Beige",
+      "Mauve",
+      "Pink",
+      "Sage",
+      "Burgundy",
+      "Brown"
+    ],
+    "category": "Apparel",
+    "subCategory": "Hoodies & Sweats",
+    "costPrice": 1200,
+    "brand": "C-HUB Originals"
+  },
+  {
+    "id": "prod-002",
+    "sku": "CHUB-TEE-001",
+    "name": "Premium T-Shirt - White",
+    "price": 1999,
+    "stock": 50,
+    "image": "/images/clothes/men/t-shirts/white.png",
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL"
+    ],
+    "colors": [
+      "White"
+    ],
+    "category": "Apparel",
+    "subCategory": "T-Shirts",
+    "costPrice": 800,
+    "brand": "C-HUB Originals"
+  },
+  {
+    "id": "prod-003",
+    "sku": "CHUB-TEE-002",
+    "name": "Premium T-Shirt - Black",
+    "price": 1999,
+    "stock": 45,
+    "image": "/images/clothes/men/t-shirts/black.png",
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL"
+    ],
+    "colors": [
+      "Black"
+    ],
+    "category": "Apparel",
+    "subCategory": "T-Shirts",
+    "costPrice": 800,
+    "brand": "C-HUB Originals"
+  },
+  {
+    "id": "prod-004",
+    "sku": "CHUB-TEE-003",
+    "name": "Premium T-Shirt - Blue",
+    "price": 1999,
+    "stock": 40,
+    "image": "/images/clothes/men/t-shirts/blue.png",
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL"
+    ],
+    "colors": [
+      "Blue"
+    ],
+    "category": "Apparel",
+    "subCategory": "T-Shirts",
+    "costPrice": 800,
+    "brand": "C-HUB Originals"
+  },
+  {
+    "id": "prod-005",
+    "sku": "CHUB-TEE-004",
+    "name": "Premium T-Shirt - Yellow",
+    "price": 1999,
+    "stock": 35,
+    "image": "/images/clothes/men/t-shirts/yellow.png",
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL"
+    ],
+    "colors": [
+      "Yellow"
+    ],
+    "category": "Apparel",
+    "subCategory": "T-Shirts",
+    "costPrice": 800,
+    "brand": "C-HUB Originals"
+  },
+  {
+    "id": "prod-006",
+    "sku": "CHUB-TEE-005",
+    "name": "Premium T-Shirt - Red",
+    "price": 1999,
+    "stock": 30,
+    "image": "/images/clothes/men/t-shirts/red.png",
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL"
+    ],
+    "colors": [
+      "Red"
+    ],
+    "category": "Apparel",
+    "subCategory": "T-Shirts",
+    "costPrice": 800,
+    "brand": "C-HUB Originals"
+  },
+  {
+    "id": "prod-007",
+    "sku": "CHUB-TEE-006",
+    "name": "Premium T-Shirt - Green",
+    "price": 1999,
+    "stock": 25,
+    "image": "/images/clothes/men/t-shirts/green.png",
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL"
+    ],
+    "colors": [
+      "Green"
+    ],
+    "category": "Apparel",
+    "subCategory": "T-Shirts",
+    "costPrice": 800,
+    "brand": "C-HUB Originals"
+  },
+  {
+    "id": "prod-008",
+    "sku": "CHUB-HD-002",
+    "name": "Cozy Hoodie - Beige",
+    "price": 2499,
+    "stock": 40,
+    "image": "/images/clothes/men/hoodie/beige.png",
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL"
+    ],
+    "colors": [
+      "Beige"
+    ],
+    "category": "Apparel",
+    "subCategory": "Hoodies & Sweats",
+    "costPrice": 1200,
+    "brand": "C-HUB Originals"
+  },
+  {
+    "id": "prod-009",
+    "sku": "CHUB-HD-003",
+    "name": "Cozy Hoodie - Mauve",
+    "price": 2499,
+    "stock": 35,
+    "image": "/images/clothes/men/hoodie/mauve.png",
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL"
+    ],
+    "colors": [
+      "Mauve"
+    ],
+    "category": "Apparel",
+    "subCategory": "Hoodies & Sweats",
+    "costPrice": 1200,
+    "brand": "C-HUB Originals"
+  },
+  {
+    "id": "prod-010",
+    "sku": "CHUB-HD-004",
+    "name": "Cozy Hoodie - Pink",
+    "price": 2499,
+    "stock": 30,
+    "image": "/images/clothes/men/hoodie/pink.png",
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL"
+    ],
+    "colors": [
+      "Pink"
+    ],
+    "category": "Apparel",
+    "subCategory": "Hoodies & Sweats",
+    "costPrice": 1200,
+    "brand": "C-HUB Originals"
+  },
+  {
+    "id": "prod-011",
+    "sku": "CHUB-HD-005",
+    "name": "Cozy Hoodie - Sage",
+    "price": 2499,
+    "stock": 25,
+    "image": "/images/clothes/men/hoodie/sage.png",
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL"
+    ],
+    "colors": [
+      "Sage"
+    ],
+    "category": "Apparel",
+    "subCategory": "Hoodies & Sweats",
+    "costPrice": 1200,
+    "brand": "C-HUB Originals"
+  },
+  {
+    "id": "prod-012",
+    "sku": "CHUB-HD-006",
+    "name": "Cozy Hoodie - Burgundy",
+    "price": 2499,
+    "stock": 20,
+    "image": "/images/clothes/men/hoodie/burgundy.png",
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL"
+    ],
+    "colors": [
+      "Burgundy"
+    ],
+    "category": "Apparel",
+    "subCategory": "Hoodies & Sweats",
+    "costPrice": 1200,
+    "brand": "C-HUB Originals"
+  },
+  {
+    "id": "prod-013",
+    "sku": "CHUB-HD-007",
+    "name": "Cozy Hoodie - Brown",
+    "price": 2499,
+    "stock": 15,
+    "image": "/images/clothes/men/hoodie/brown.png",
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL"
+    ],
+    "colors": [
+      "Brown"
+    ],
+    "category": "Apparel",
+    "subCategory": "Hoodies & Sweats",
+    "costPrice": 1200,
+    "brand": "C-HUB Originals"
+  },
+  {
+    "id": "prod-014",
+    "sku": "CHUB-SW-001",
+    "name": "Classic Sweatshirt - White",
+    "price": 2199,
+    "stock": 40,
+    "image": "/images/clothes/men/sweatshirts/white1.png",
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL"
+    ],
+    "colors": [
+      "White"
+    ],
+    "category": "Apparel",
+    "subCategory": "Sweatshirts",
+    "costPrice": 1000,
+    "brand": "C-HUB Originals"
+  },
+  {
+    "id": "prod-015",
+    "sku": "CHUB-SW-002",
+    "name": "Classic Sweatshirt - Gray",
+    "price": 2199,
+    "stock": 35,
+    "image": "/images/clothes/men/sweatshirts/gray1.png",
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL"
+    ],
+    "colors": [
+      "Gray"
+    ],
+    "category": "Apparel",
+    "subCategory": "Sweatshirts",
+    "costPrice": 1000,
+    "brand": "C-HUB Originals"
+  },
+  {
+    "id": "prod-016",
+    "sku": "CHUB-SW-003",
+    "name": "Classic Sweatshirt - Blue",
+    "price": 2199,
+    "stock": 30,
+    "image": "/images/clothes/men/sweatshirts/blue1.png",
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL"
+    ],
+    "colors": [
+      "Blue"
+    ],
+    "category": "Apparel",
+    "subCategory": "Sweatshirts",
+    "costPrice": 1000,
+    "brand": "C-HUB Originals"
+  },
+  {
+    "id": "prod-017",
+    "sku": "CHUB-SW-004",
+    "name": "Classic Sweatshirt - Brown",
+    "price": 2199,
+    "stock": 25,
+    "image": "/images/clothes/men/sweatshirts/brown2.png",
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL"
+    ],
+    "colors": [
+      "Brown"
+    ],
+    "category": "Apparel",
+    "subCategory": "Sweatshirts",
+    "costPrice": 1000,
+    "brand": "C-HUB Originals"
+  },
+  {
+    "id": "prod-018",
+    "sku": "CHUB-SW-005",
+    "name": "Classic Sweatshirt - Pink",
+    "price": 2199,
+    "stock": 20,
+    "image": "/images/clothes/men/sweatshirts/pink1.png",
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL"
+    ],
+    "colors": [
+      "Pink"
+    ],
+    "category": "Apparel",
+    "subCategory": "Sweatshirts",
+    "costPrice": 1000,
+    "brand": "C-HUB Originals"
+  },
+  {
+    "id": "prod-019",
+    "sku": "CHUB-SW-006",
+    "name": "Classic Sweatshirt - Beige",
+    "price": 2199,
+    "stock": 15,
+    "image": "/images/clothes/men/sweatshirts/beige1.png",
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL"
+    ],
+    "colors": [
+      "Beige"
+    ],
+    "category": "Apparel",
+    "subCategory": "Sweatshirts",
+    "costPrice": 1000,
+    "brand": "C-HUB Originals"
+  },
+  {
+    "id": "prod-020",
+    "sku": "CHUB-PANTS-001",
+    "name": "Classic Denim Jeans - Light Stone",
+    "price": 1799,
+    "stock": 40,
+    "image": "/images/clothes/men/pants/pants1.png",
+    "sizes": [
+      "28",
+      "30",
+      "32",
+      "34",
+      "36"
+    ],
+    "colors": [
+      "Light Stone",
+      "Mid Gray",
+      "Off White",
+      "Silver Sand",
+      "Deep Indigo Navy",
+      "Rustic Brown"
+    ],
+    "category": "Apparel",
+    "subCategory": "Jeans",
+    "costPrice": 900,
+    "brand": "C-HUB Street"
+  },
+  {
+    "id": "prod-021",
+    "sku": "CHUB-PANTS-002",
+    "name": "Everyday Shorts - White",
+    "price": 1299,
+    "stock": 50,
+    "image": "/images/clothes/men/pants/pants1.png",
+    "sizes": [
+      "28",
+      "30",
+      "32",
+      "34",
+      "36"
+    ],
+    "colors": [
+      "White",
+      "Charcoal",
+      "Navy",
+      "Yellow",
+      "Red",
+      "Green"
+    ],
+    "category": "Apparel",
+    "subCategory": "Shorts",
+    "costPrice": 650,
+    "brand": "C-HUB Street"
+  },
+  {
+    "id": "prod-022",
+    "sku": "CHUB-SNK-001",
+    "name": "Urban Sneakers - Chalk White",
+    "price": 2499,
+    "stock": 40,
+    "image": "/images/clothes/men/shoes/shoes1.png",
+    "sizes": [
+      "7",
+      "8",
+      "9",
+      "10",
+      "11"
+    ],
+    "colors": [
+      "Chalk White",
+      "Stealth Charcoal",
+      "Deep Navy",
+      "Solar Yellow",
+      "Crimson Red",
+      "Emerald Green"
+    ],
+    "category": "Footwear",
+    "subCategory": "Sneakers",
+    "costPrice": 1200,
+    "brand": "C-HUB Kicks"
+  },
+  {
+    "id": "prod-023",
+    "sku": "CHUB-SNK-002",
+    "name": "Urban Sneakers - Stealth Charcoal",
+    "price": 2499,
+    "stock": 35,
+    "image": "/images/clothes/men/shoes/shoes2.png",
+    "sizes": [
+      "7",
+      "8",
+      "9",
+      "10",
+      "11"
+    ],
+    "colors": [
+      "Stealth Charcoal"
+    ],
+    "category": "Footwear",
+    "subCategory": "Sneakers",
+    "costPrice": 1200,
+    "brand": "C-HUB Kicks"
+  },
+  {
+    "id": "prod-024",
+    "sku": "CHUB-SNK-003",
+    "name": "Urban Sneakers - Deep Navy",
+    "price": 2499,
+    "stock": 30,
+    "image": "/images/clothes/men/shoes/shoes3.png",
+    "sizes": [
+      "7",
+      "8",
+      "9",
+      "10",
+      "11"
+    ],
+    "colors": [
+      "Deep Navy"
+    ],
+    "category": "Footwear",
+    "subCategory": "Sneakers",
+    "costPrice": 1200,
+    "brand": "C-HUB Kicks"
+  },
+  {
+    "id": "prod-025",
+    "sku": "CHUB-BAG-001",
+    "name": "Everyday Crossbody Bag - Stone",
+    "price": 1499,
+    "stock": 50,
+    "image": "/images/clothes/men/accessories/black.png",
+    "sizes": [
+      "OS",
+      "S",
+      "M",
+      "L"
+    ],
+    "colors": [
+      "Stone",
+      "Stealth Charcoal",
+      "Navy Blue",
+      "Vibrant Yellow",
+      "Crimson Red",
+      "Forest Green"
+    ],
+    "category": "Accessories",
+    "subCategory": "Bags",
+    "costPrice": 700,
+    "brand": "C-HUB Gear"
+  },
+  {
+    "id": "prod-026",
+    "sku": "CHUB-BAG-002",
+    "name": "Classic Street Cap - White",
+    "price": 799,
+    "stock": 60,
+    "image": "/images/clothes/men/accessories/white.png",
+    "sizes": [
+      "OS",
+      "S",
+      "M",
+      "L"
+    ],
+    "colors": [
+      "White",
+      "Charcoal",
+      "Navy",
+      "Yellow",
+      "Red",
+      "Green"
+    ],
+    "category": "Accessories",
+    "subCategory": "Hats",
+    "costPrice": 350,
+    "brand": "C-HUB Gear"
+  },
+  {
+    "id": "prod-027",
+    "sku": "CHUB-SOCKS-001",
+    "name": "Cushioned Crew Socks - White",
+    "price": 399,
+    "stock": 100,
+    "image": "/images/clothes/men/accessories/white.png",
+    "sizes": [
+      "S",
+      "M",
+      "L"
+    ],
+    "colors": [
+      "White",
+      "Charcoal",
+      "Navy",
+      "Yellow",
+      "Red",
+      "Green"
+    ],
+    "category": "Accessories",
+    "subCategory": "Socks",
+    "costPrice": 150,
+    "brand": "C-HUB Gear"
+  }
+]

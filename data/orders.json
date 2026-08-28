@@ -1,0 +1,108 @@
+[
+  {
+    "orderId": "CHUB-757142",
+    "date": "Aug 28, 2026",
+    "customer": {
+      "name": "Edrian Dela Cruz",
+      "email": "edrian.clavel.delacruz@apcas.ph.education",
+      "phone": "09987654321",
+      "address": "SF II LIMAY BATAN"
+    },
+    "items": [
+      {
+        "id": "shoes-men-sneakers-Stealth Charcoal-7",
+        "name": "Urban Sneakers - Stealth Charcoal",
+        "price": 2499,
+        "image": "http://localhost:3013/images/clothes/men/shoes/shoes2.png",
+        "size": "7",
+        "color": "Stealth Charcoal",
+        "subCategory": "sneakers",
+        "gender": "men",
+        "qty": 1
+      },
+      {
+        "id": "clothes-men-tshirt-White-XL",
+        "name": "Premium T-Shirt - White",
+        "price": 1999,
+        "image": "http://localhost:3013/images/clothes/men/t-shirts/white.png",
+        "size": "XL",
+        "color": "White",
+        "subCategory": "tshirt",
+        "gender": "men",
+        "qty": 1
+      }
+    ],
+    "subtotal": 4498,
+    "shipping": 0,
+    "discount": 0,
+    "discountCode": "",
+    "total": 4498,
+    "payment": "Cash on Delivery",
+    "status": "To Ship",
+    "createdAt": "2026-08-28T07:10:24.011Z"
+  },
+  {
+    "orderId": "CHUB-341002",
+    "date": "Aug 28, 2026",
+    "customer": {
+      "name": "Ian Dela Cruz",
+      "email": "iandelacruz@gmail.com",
+      "phone": "09123456789",
+      "address": "SF 11 LIMAY,BATAAN"
+    },
+    "items": [
+      {
+        "id": "clothes-men-tshirt-White-XL",
+        "name": "Premium T-Shirt - White",
+        "price": 1999,
+        "image": "/images/clothes/men/t-shirts/white.png",
+        "size": "XL",
+        "color": "White",
+        "subCategory": "tshirt",
+        "gender": "men",
+        "qty": 1
+      }
+    ],
+    "subtotal": 1999,
+    "shipping": 150,
+    "discount": 0,
+    "discountCode": "",
+    "total": 2149,
+    "payment": "Cash on Delivery",
+    "status": "Cancelled",
+    "createdAt": "2026-08-28T01:48:11.843Z",
+    "updatedAt": "2026-08-28T02:43:30.645Z"
+  },
+  {
+    "orderId": "CHUB-130174",
+    "date": "Aug 28, 2026",
+    "customer": {
+      "name": "Edrian Dela Cruz",
+      "email": "edrian.clavel.delacruz@apcas.ph.education",
+      "phone": "09123456789",
+      "address": "014 NATIONAL ROAD SF II LIMAY BATAAN"
+    },
+    "items": [
+      {
+        "id": "clothes-men-tshirt-White-XL",
+        "name": "Premium T-Shirt - White",
+        "price": 1999,
+        "image": "/images/clothes/men/t-shirts/white.png",
+        "size": "XL",
+        "color": "White",
+        "subCategory": "tshirt",
+        "gender": "men",
+        "qty": 1
+      }
+    ],
+    "subtotal": 1999,
+    "shipping": 150,
+    "discount": 0,
+    "discountCode": "",
+    "total": 2149,
+    "payment": "Cash on Delivery",
+    "status": "Completed",
+    "createdAt": "2026-08-28T02:31:47.602Z",
+    "updatedAt": "2026-08-28T02:57:38.274Z"
+  }
+]
