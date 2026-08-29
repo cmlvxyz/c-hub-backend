@@ -67,6 +67,25 @@ const writeData = (file, data) => {
   }
 };
 
+// ============ ORDER STATUS HELPER ============
+// Source of truth para sa initial order status:
+//  - Cash on Delivery        -> 'To Ship'
+//  - Online (GCash/Maya/Card) na bayad na -> 'To Ship'
+//  - Online (GCash/Maya/Card) na hindi pa bayad / pending -> 'To Pay'
+const getInitialOrderStatus = (payment, isPaid) => {
+  const pay = String(payment || '').toLowerCase();
+  const isCashOnDelivery = pay.includes('cod') || pay.includes('cash on delivery') || pay.includes('cashondelivery');
+  if (isCashOnDelivery) return 'To Ship';
+
+  let paid = isPaid === true || isPaid === 'true';
+  if (payment && typeof payment === 'object') {
+    const pStatus = String(payment.status || '').toLowerCase();
+    if (['paid', 'success', 'successful', 'completed', 'succeeded', 'approved'].includes(pStatus)) paid = true;
+  }
+
+  return paid ? 'To Ship' : 'To Pay';
+};
+
 // ============ SSE CLIENTS TRACKER (REAL-TIME) ============
 let sseClients = [];
 
@@ -148,12 +167,9 @@ app.post('/api/orders', (req, res) => {
     });
     writeData(PRODUCTS_FILE, products);
 
-    // 2. Determine initial status base sa payment method
-    // COD -> 'To Ship' | Online Payment -> 'To Pay'
-    let initialStatus = 'To Ship';
-    if (payment && payment !== 'Cash on Delivery' && payment !== 'COD' && !req.body.isPaid) {
-      initialStatus = 'To Pay';
-    }
+    // 2. Determine initial status base sa payment method (backend ang source of truth)
+    // COD -> 'To Ship' | Online Payment na hindi bayad -> 'To Pay'
+    const initialStatus = getInitialOrderStatus(payment, req.body.isPaid);
 
     const newOrder = {
       orderId: req.body.orderId || `CHUB-${Math.floor(100000 + Math.random() * 900000)}`,
@@ -176,7 +192,7 @@ app.post('/api/orders', (req, res) => {
       discountCode: discountCode || '',
       total: total || subtotal || 0,
       payment: payment || 'Cash on Delivery',
-      status: req.body.status || initialStatus
+      status: initialStatus
     };
 
     orders.unshift(newOrder);
@@ -190,6 +206,61 @@ app.post('/api/orders', (req, res) => {
     res.status(201).json({ success: true, order: newOrder });
   } catch (error) {
     console.error('❌ Error creating order:', error);
+    res.status(500).json({ error: error.message });
+  }
+});
+
+// POST Sync Orders (Galing sa Store localStorage; server ang source of truth ng status)
+app.post('/api/orders/sync', (req, res) => {
+  try {
+    const incoming = Array.isArray(req.body) ? req.body : (req.body?.orders || []);
+    if (!Array.isArray(incoming) || incoming.length === 0) {
+      return res.status(400).json({ error: 'No orders to sync' });
+    }
+
+    const orders = readData(ORDERS_FILE);
+    let added = 0;
+    let updated = 0;
+
+    incoming.forEach(incomingOrder => {
+      if (!incomingOrder?.orderId) return;
+
+      const index = orders.findIndex(o => o.orderId === incomingOrder.orderId);
+
+      if (index !== -1) {
+        // Existing order -> panatilihin ang status na galing sa server (source of truth)
+        const serverStatus = orders[index].status;
+        orders[index] = {
+          ...orders[index],
+          ...incomingOrder,
+          status: serverStatus,
+          updatedAt: new Date().toISOString()
+        };
+        updated++;
+      } else {
+        // Bagong order -> i-compute ang status mula sa payment, at i-broadcast para sa admin
+        const newOrder = {
+          ...incomingOrder,
+          status: getInitialOrderStatus(incomingOrder.payment, incomingOrder.isPaid),
+          createdAt: incomingOrder.createdAt || new Date().toISOString(),
+          customer: incomingOrder.customer || {
+            name: incomingOrder.customerName || 'Customer',
+            email: incomingOrder.customerEmail || '',
+            phone: incomingOrder.customerPhone || '',
+            address: incomingOrder.shippingAddress?.address || ''
+          }
+        };
+        orders.unshift(newOrder);
+        added++;
+        console.log(`✅ Synced New Order: ${newOrder.orderId}`);
+        broadcastSSE('new-order', newOrder);
+      }
+    });
+
+    writeData(ORDERS_FILE, orders);
+    res.json({ success: true, added, updated, total: orders.length });
+  } catch (error) {
+    console.error('❌ Error syncing orders:', error);
     res.status(500).json({ error: error.message });
   }
 });

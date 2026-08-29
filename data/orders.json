@@ -1,5 +1,58 @@
 [
   {
+    "orderId": "CHUB-372900",
+    "date": "Aug 29, 2026",
+    "createdAt": "2026-08-29T03:33:41.861Z",
+    "customer": {
+      "name": "Edrian Dela Cruz",
+      "email": "edrian.clavel.delacruz@apcas.ph.education",
+      "phone": "09987654321",
+      "address": "SF II"
+    },
+    "items": [
+      {
+        "id": "clothes-women-top-Cream-XL",
+        "name": "Peplum Top - Cream",
+        "price": 1799,
+        "image": "/images/clothes/women/top/top1.png",
+        "size": "XL",
+        "color": "Cream",
+        "subCategory": "top",
+        "gender": "women",
+        "qty": 1
+      },
+      {
+        "id": "clothes-women-dress-Sky Stripe-XL",
+        "name": "Summer Halter Dress - Sky Stripe",
+        "price": 2999,
+        "image": "/images/clothes/women/dress/dress2.png",
+        "size": "XL",
+        "color": "Sky Stripe",
+        "subCategory": "dress",
+        "gender": "women",
+        "qty": 1
+      },
+      {
+        "id": "clothes-men-tshirt-Blue-XL",
+        "name": "Premium T-Shirt - Blue",
+        "price": 1999,
+        "image": "/images/clothes/men/t-shirts/blue.png",
+        "size": "XL",
+        "color": "Blue",
+        "subCategory": "tshirt",
+        "gender": "men",
+        "qty": 1
+      }
+    ],
+    "subtotal": 6797,
+    "shipping": 0,
+    "discount": 0,
+    "discountCode": "",
+    "total": 6797,
+    "payment": "Cash on Delivery",
+    "status": "To Ship"
+  },
+  {
     "orderId": "CHUB-209935",
     "date": "Aug 29, 2026",
     "customer": {

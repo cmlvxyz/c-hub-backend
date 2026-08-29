@@ -4,7 +4,7 @@
     "sku": "CHUB-TEE-001",
     "name": "Premium T-Shirt - White",
     "price": 1999,
-    "stock": 50,
+    "stock": 48,
     "image": "/images/clothes/men/t-shirts/white.png",
     "sizes": [
       "S",
@@ -46,7 +46,7 @@
     "sku": "CHUB-TEE-003",
     "name": "Premium T-Shirt - Blue",
     "price": 1999,
-    "stock": 40,
+    "stock": 39,
     "image": "/images/clothes/men/t-shirts/blue.png",
     "sizes": [
       "S",
