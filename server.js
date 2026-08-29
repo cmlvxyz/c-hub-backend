@@ -42,6 +42,7 @@ if (!fs.existsSync(DATA_DIR)) {
 const ORDERS_FILE = path.join(DATA_DIR, 'orders.json');
 const PRODUCTS_FILE = path.join(DATA_DIR, 'products.json');
 const REVIEWS_FILE = path.join(DATA_DIR, 'reviews.json');
+const DELETED_FILE = path.join(DATA_DIR, 'deleted_orders.json');
 
 // ============ READ/WRITE HELPER FUNCTIONS ============
 const readData = (file) => {
@@ -65,6 +66,16 @@ const writeData = (file, data) => {
     console.error(`❌ Error writing ${file}:`, error);
     return false;
   }
+};
+
+// Tomstone list of deleted order IDs -> pinipigilan ang pag-resurrect sa pamamagitan ng /sync
+const readDeletedIds = () => {
+  const val = readData(DELETED_FILE);
+  return Array.isArray(val) ? val : [];
+};
+
+const writeDeletedIds = (ids) => {
+  writeData(DELETED_FILE, [...new Set(ids)]);
 };
 
 // ============ ORDER STATUS HELPER ============
@@ -219,11 +230,19 @@ app.post('/api/orders/sync', (req, res) => {
     }
 
     const orders = readData(ORDERS_FILE);
+    const deletedIds = readDeletedIds();
     let added = 0;
     let updated = 0;
+    let skipped = 0;
 
     incoming.forEach(incomingOrder => {
       if (!incomingOrder?.orderId) return;
+
+      // Huwag nang i-restore ang order na dati nang dinelete sa admin
+      if (deletedIds.includes(incomingOrder.orderId)) {
+        skipped++;
+        return;
+      }
 
       const index = orders.findIndex(o => o.orderId === incomingOrder.orderId);
 
@@ -258,7 +277,7 @@ app.post('/api/orders/sync', (req, res) => {
     });
 
     writeData(ORDERS_FILE, orders);
-    res.json({ success: true, added, updated, total: orders.length });
+    res.json({ success: true, added, updated, skipped, total: orders.length });
   } catch (error) {
     console.error('❌ Error syncing orders:', error);
     res.status(500).json({ error: error.message });
@@ -307,6 +326,12 @@ app.delete('/api/orders/:id', (req, res) => {
     }
 
     writeData(ORDERS_FILE, filtered);
+
+    // Tombstone: tandaan ang deleted ID para hindi na ito ma-resurrect ng /sync (localStorage ng store)
+    const deletedIds = readDeletedIds();
+    if (!deletedIds.includes(id)) deletedIds.push(id);
+    writeDeletedIds(deletedIds);
+
     console.log(`🗑️ Order ${id} deleted`);
     broadcastSSE('order-deleted', { orderId: id });
     res.json({ success: true });
