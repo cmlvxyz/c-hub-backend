@@ -10,12 +10,12 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 const app = express();
-const PORT = process.env.PORT || 3013;
+const PORT = process.env.PORT || 3006;
 
 // ============ CORS SETUP ============
 const corsOrigins = process.env.CORS_ORIGIN 
   ? process.env.CORS_ORIGIN.split(',') 
-  : ['http://localhost:3011', 'http://localhost:3014'];
+  : ['http://localhost:3004', 'http://localhost:3005'];
 
 app.use(cors({
   origin: (origin, callback) => {
